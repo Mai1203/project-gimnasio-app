@@ -1,38 +1,31 @@
 'use client';
 
 import { Inter } from 'next/font/google';
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+import { AppProvider } from '@/context/AppContext';
 import './globals.css';
+
+import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
-/**
- * Root layout with animated page transitions
- * Provides consistent styling and smooth transitions between pages
- */
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-
   return (
     <html lang="es" className="dark">
       <body className={inter.className}>
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.main
-            key={pathname}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="min-h-screen"
-          >
-            {children}
-          </motion.main>
-        </AnimatePresence>
+        <AppProvider>
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+            <Navbar />
+            <main className="pt-16">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </AppProvider>
       </body>
     </html>
   );
