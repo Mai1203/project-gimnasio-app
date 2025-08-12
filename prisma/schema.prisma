@@ -1,0 +1,85 @@
+// Prisma schema for GymControl
+// This defines the database structure for the gym management system
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String?
+  email       String   @unique
+  password    String?
+  role        Role     @default(USER)
+  phone       String?
+  address     String?
+  birthDate   DateTime?
+  active      Boolean  @default(true)
+  membershipStartDate DateTime?
+  membershipEndDate   DateTime?
+  planId      String?
+  plan        Plan?    @relation(fields: [planId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  checkIns     CheckIn[]
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model Plan {
+  id           String   @id @default(cuid())
+  name         String
+  priceCents   Int
+  durationDays Int
+  description  String?
+  features     String[] // JSON array of features
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  users User[]
+
+  @@map("plans")
+}
+
+model CheckIn {
+  id     String   @id @default(cuid())
+  user   User     @relation(fields: [userId], references: [id])
+  userId String
+  at     DateTime @default(now())
+  method String   @default("CARD") // CARD, MANUAL, APP
+
+  @@map("checkins")
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  amountCents Int
+  currency    String          @default("USD")
+  type        TransactionType
+  description String?
+  userId      String?
+  user        User?           @relation(fields: [userId], references: [id])
+  createdAt   DateTime        @default(now())
+
+  @@map("transactions")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  USER
+}
+
+enum TransactionType {
+  PAYMENT
+  REFUND
+  MANUAL
+}
