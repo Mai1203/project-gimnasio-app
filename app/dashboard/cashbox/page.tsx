@@ -132,7 +132,7 @@ export default function CashboxPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="card animate-pulse">
@@ -145,7 +145,7 @@ export default function CashboxPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

@@ -19,7 +19,7 @@ import {
   LogOut, 
   Menu, 
   X,
-  User
+  Settings
 } from 'lucide-react';
 
 const Navbar: React.FC = () => {
@@ -42,9 +42,10 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { href: '/', label: 'Inicio', icon: Home },
     ...(user ? [
-      { href: '/admin', label: 'Panel Admin', icon: BarChart3 },
-      { href: '/admin/users', label: 'Usuarios', icon: Users },
-      { href: '/admin/plans', label: 'Planes', icon: CreditCard },
+      { href: '/dashboard', label: 'Panel', icon: BarChart3 },
+      { href: '/dashboard/users', label: 'Usuarios', icon: Users },
+      { href: '/dashboard/plans', label: 'Planes', icon: CreditCard },
+      { href: '/dashboard/cashbox', label: 'Caja', icon: CreditCard },
     ] : [])
   ];
 

@@ -8,9 +8,9 @@ import { DivideIcon as LucideIcon } from 'lucide-react';
 interface KPIProps {
   title: string;
   value: number | string;
-  icon: LucideIcon;
+  icon: typeof LucideIcon;
   trend?: {
-    value: number;
+    change: number;
     isPositive: boolean;
   };
   prefix?: string;
@@ -54,7 +54,7 @@ export function KPI({
               'flex items-center space-x-1 text-sm font-medium',
               trend.isPositive ? 'text-success' : 'text-error'
             )}>
-              <span>{trend.isPositive ? '+' : '-'}{Math.abs(trend.value)}%</span>
+              <span>{trend.isPositive ? '+' : '-'}{Math.abs(trend.change)}%</span>
             </div>
           )}
         </div>

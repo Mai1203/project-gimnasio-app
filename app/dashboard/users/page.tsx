@@ -106,7 +106,7 @@ export default function UsersPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
         <div className="card animate-pulse">
           <div className="h-40 bg-surface-hover rounded"></div>
         </div>
@@ -115,7 +115,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
