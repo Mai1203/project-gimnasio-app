@@ -11,11 +11,13 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { UserPlus, Mail, Lock, User, Phone, ArrowLeft, CheckCircle } from 'lucide-react';
+import { signIn } from "next-auth/react";
+
 import { useApp } from '@/context/AppContext';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedInput } from '@/components/ui/animated-input';
 import { AnimatedCard } from '@/components/ui/animated-card';
-import { UserPlus, Mail, Lock, User, Phone, ArrowLeft, CheckCircle } from 'lucide-react';
 
 // Schema de validación con Zod
 const registerSchema = z.object({
@@ -79,23 +81,43 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
-    setRegisterError('');
+    setRegisterError("");
 
     try {
-      const success = await registerUser({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        password: data.password
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          password: data.password
+        })
       });
 
-      if (success) {
-        router.push('/dashboard');
+      const result = await res.json();
+
+      if (!res.ok) {
+        setRegisterError(result.error || "Error al crear la cuenta");
+        setIsLoading(false);
+        return;
+      }
+
+      // Login automático después de registrarse
+      const loginRes = await signIn("credentials", {
+        redirect: true,
+        email: data.email,
+        password: data.password,
+        callbackUrl: "/dashboard"
+      });
+
+      if (loginRes?.error) {
+        setRegisterError("Cuenta creada pero error al iniciar sesión");
       } else {
-        setRegisterError('Error al crear la cuenta. Intenta de nuevo.');
+        router.push("/dashboard");
       }
     } catch (error) {
-      setRegisterError('Error al registrarse. Intenta de nuevo.');
+      setRegisterError("Error al registrarse. Intenta de nuevo.");
     } finally {
       setIsLoading(false);
     }

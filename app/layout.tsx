@@ -19,15 +19,15 @@ export default function RootLayout({
     <html lang="es" className="dark">
       <body className={inter.className}>
         <AppProvider>
-          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-            <Navbar />
-            <main className="pt-16">
-              <SessionProvider>
-                {children}
-              </SessionProvider> 
-            </main>
-            <Footer />
-          </div>
+          <SessionProvider> 
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+              <Navbar />
+              <main className="pt-16">  
+                {children}               
+              </main>
+              <Footer />
+            </div>
+          </SessionProvider>
         </AppProvider>
       </body>
     </html>

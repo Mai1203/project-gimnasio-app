@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useApp } from '@/context/AppContext';
+import { useSession, signOut } from 'next-auth/react';
 import { 
   Dumbbell, 
   Home, 
@@ -25,7 +25,7 @@ import {
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, logout } = useApp();
+  const { data: session, status } = useSession();
   const pathname = usePathname();
 
   // Detectar scroll para cambiar estilo del navbar
@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
   // Links de navegación
   const navLinks = [
     { href: '/', label: 'Inicio', icon: Home },
-    ...(user ? [
+    ...(session?.user ? [
       { href: '/dashboard', label: 'Panel', icon: BarChart3 },
       { href: '/dashboard/users', label: 'Usuarios', icon: Users },
       { href: '/dashboard/plans', label: 'Planes', icon: CreditCard },
@@ -49,8 +49,8 @@ const Navbar: React.FC = () => {
     ] : [])
   ];
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
     setIsMobileMenuOpen(false);
   };
 
@@ -127,10 +127,10 @@ const Navbar: React.FC = () => {
 
           {/* Acciones de usuario */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
+            {session?.user ? (
               <div className="flex items-center space-x-3">
                 <div className="text-sm text-gray-300">
-                  <span className="text-amber-400">{user.name}</span>
+                  <span className="text-amber-400">{session.user.name}</span>
                 </div>
                 <motion.button
                   onClick={handleLogout}
@@ -207,7 +207,7 @@ const Navbar: React.FC = () => {
             );
           })}
           
-          {user ? (
+          {session?.user ? (
             <button
               onClick={handleLogout}
               className="flex items-center space-x-3 px-4 py-3 w-full text-left rounded-lg font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all duration-200"

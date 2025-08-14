@@ -6,8 +6,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { 
   Users, 
   DollarSign,
@@ -19,27 +17,22 @@ import {
   Plus
 } from 'lucide-react';
 import Link from 'next/link';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import { useApp } from '@/context/AppContext';
 import { AnimatedCard } from '@/components/ui/animated-card';
 import { AnimatedButton } from '@/components/ui/animated-button';
 
-export default async function AdminDashboard() {
+export default function AdminDashboard() {
   const { user, dashboardStats, users, plans } = useApp();
-  const router = useRouter();
-  const session = await getServerSession();
+  const { data: session, status } = useSession();
 
-  // Verificar autenticación
-  useEffect(() => {
-    if (!user) {
-      router.push('/auth/login');
-    }
-  }, [user, router]);
+  if (status === "loading") {
+    return <p>Cargando...</p>;
+  }
 
   if (!session) {
-    redirect("/auth/login");
+    return <p>No tienes acceso a esta página</p>;
   }
 
   // Datos para gráficos y estadísticas
