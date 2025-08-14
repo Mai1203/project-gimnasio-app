@@ -1,6 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
+
+import * as React from 'react'; 
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import { Card } from './Card';
 import { cn } from '@/lib/utils';
 import { DivideIcon as LucideIcon } from 'lucide-react';
@@ -19,10 +21,6 @@ interface KPIProps {
   className?: string;
 }
 
-/**
- * KPI Card component with animated counters
- * Used in the dashboard for displaying key metrics
- */
 export function KPI({
   title,
   value,
@@ -50,29 +48,28 @@ export function KPI({
             <Icon className="h-6 w-6 text-primary" />
           </div>
           {trend && (
-            <div className={cn(
-              'flex items-center space-x-1 text-sm font-medium',
-              trend.isPositive ? 'text-success' : 'text-error'
-            )}>
-              <span>{trend.isPositive ? '+' : '-'}{Math.abs(trend.change)}%</span>
+            <div
+              className={cn(
+                'flex items-center space-x-1 text-sm font-medium',
+                trend.isPositive ? 'text-success' : 'text-error'
+              )}
+            >
+              <span>
+                {trend.isPositive ? '+' : '-'}
+                {Math.abs(trend.change)}%
+              </span>
             </div>
           )}
         </div>
 
         {/* Title */}
-        <p className="text-text-secondary text-sm font-medium mb-2">
-          {title}
-        </p>
+        <p className="text-text-secondary text-sm font-medium mb-2">{title}</p>
 
         {/* Value */}
         <div className="text-2xl font-bold text-text-primary">
           {prefix}
           {animate && isNumeric ? (
-            <AnimatedCounter
-              from={0}
-              to={numericValue}
-              duration={2000}
-            />
+            <AnimatedCounter from={0} to={numericValue} duration={2000} />
           ) : (
             value
           )}
@@ -83,40 +80,25 @@ export function KPI({
   );
 }
 
-/**
- * Animated counter component
- * Animates from one number to another
- */
-function AnimatedCounter({ 
-  from, 
-  to, 
-  duration = 2000 
-}: { 
-  from: number; 
-  to: number; 
-  duration?: number; 
+function AnimatedCounter({
+  from,
+  to,
+  duration = 2000,
+}: {
+  from: number;
+  to: number;
+  duration?: number;
 }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      <motion.span
-        initial={from}
-        animate={to}
-        transition={{ duration: duration / 1000, ease: 'easeOut' }}
-        onUpdate={(latest) => {
-          const element = document.querySelector(`[data-counter="${to}"]`);
-          if (element) {
-            element.textContent = Math.floor(latest as number).toLocaleString();
-          }
-        }}
-      >
-        <span data-counter={to}>
-          {from.toLocaleString()}
-        </span>
-      </motion.span>
-    </motion.span>
-  );
+  const motionValue = useMotionValue(from);
+  const rounded = useTransform(motionValue, (latest) => Math.floor(latest));
+
+  React.useEffect(() => {
+    const controls = animate(motionValue, to, {
+      duration: duration / 1000,
+      ease: 'easeOut',
+    });
+    return controls.stop;
+  }, [motionValue, to, duration]);
+
+  return <motion.span>{rounded}</motion.span>;
 }
