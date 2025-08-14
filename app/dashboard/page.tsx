@@ -8,27 +8,28 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useApp } from '@/context/AppContext';
-import { AnimatedCard } from '@/components/ui/animated-card';
-import { AnimatedButton } from '@/components/ui/animated-button';
 import { 
   Users, 
-  CreditCard, 
-  TrendingUp, 
   DollarSign,
   UserPlus,
   Activity,
   Calendar,
   Target,
   BarChart3,
-  PieChart,
   Plus
 } from 'lucide-react';
 import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-export default function AdminDashboard() {
+import { useApp } from '@/context/AppContext';
+import { AnimatedCard } from '@/components/ui/animated-card';
+import { AnimatedButton } from '@/components/ui/animated-button';
+
+export default async function AdminDashboard() {
   const { user, dashboardStats, users, plans } = useApp();
   const router = useRouter();
+  const session = await getServerSession();
 
   // Verificar autenticación
   useEffect(() => {
@@ -37,8 +38,8 @@ export default function AdminDashboard() {
     }
   }, [user, router]);
 
-  if (!user) {
-    return null; // O un componente de loading
+  if (!session) {
+    redirect("/auth/login");
   }
 
   // Datos para gráficos y estadísticas
@@ -127,7 +128,7 @@ export default function AdminDashboard() {
               Panel de Administración
             </h1>
             <p className="text-gray-400">
-              Bienvenido de nuevo, {user.name}. Aquí tienes un resumen de PowerGym.
+              Bienvenido de nuevo, {session.user?.name}. Aquí tienes un resumen de PowerGym.
             </p>
           </div>
           

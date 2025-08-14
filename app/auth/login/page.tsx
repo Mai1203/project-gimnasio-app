@@ -11,12 +11,13 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { Mail, Lock, LogIn, ArrowLeft } from 'lucide-react';
+import { signIn} from 'next-auth/react';
+
 import { useApp } from '@/context/AppContext';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedInput } from '@/components/ui/animated-input';
 import { AnimatedCard } from '@/components/ui/animated-card';
-import { Mail, Lock, LogIn, ArrowLeft } from 'lucide-react';
-
 // Schema de validación con Zod
 const loginSchema = z.object({
   email: z.string()
@@ -48,19 +49,19 @@ export default function LoginPage() {
     setIsLoading(true);
     setLoginError('');
 
-    try {
-      const success = await login(data.email, data.password);
-      
-      if (success) {
-        router.push('/dashboard');
-      } else {
-        setLoginError('Email o contraseña incorrectos');
-      }
-    } catch (error) {
-      setLoginError('Error al iniciar sesión. Intenta de nuevo.');
-    } finally {
-      setIsLoading(false);
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password
+    });
+
+    if (res?.error) {
+      setLoginError("Email o contraseña incorrectos");
+    } else {
+      router.push("/dashboard");
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -117,21 +118,6 @@ export default function LoginPage() {
                 <p className="text-red-400 text-sm text-center">{loginError}</p>
               </motion.div>
             )}
-
-            {/* Demo credentials info */}
-            <motion.div
-              className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <p className="text-blue-400 text-sm text-center mb-2">
-                <strong>Credenciales de demostración:</strong>
-              </p>
-              <p className="text-blue-300 text-xs text-center">
-                Email: admin@gym.com | Contraseña: admin123
-              </p>
-            </motion.div>
 
             {/* Campo Email */}
             <div>

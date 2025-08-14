@@ -1,6 +1,7 @@
 'use client';
 
 import { Inter } from 'next/font/google';
+import { SessionProvider } from 'next-auth/react';
 import { AppProvider } from '@/context/AppContext';
 import './globals.css';
 
@@ -21,7 +22,9 @@ export default function RootLayout({
           <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">
             <Navbar />
             <main className="pt-16">
-              {children}
+              <SessionProvider>
+                {children}
+              </SessionProvider> 
             </main>
             <Footer />
           </div>
