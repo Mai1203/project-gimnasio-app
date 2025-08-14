@@ -4,7 +4,7 @@ import { User, Role } from '@prisma/client';
 export interface CreateUserData {
   name: string;
   email: string;
-  password?: string;
+  password: string;
   role?: Role;
   phone?: string;
   address?: string;
@@ -80,12 +80,15 @@ export class UsersService {
    * Create a new user
    */
   static async createUser(data: CreateUserData): Promise<User> {
+    const { planId, ...restData } = data;
+    
     return prisma.user.create({
       data: {
-        ...data,
-        membershipStartDate: data.planId ? new Date() : null,
-        membershipEndDate: data.planId 
-          ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
+        ...restData,
+        ...(planId && { plan: { connect: { id: planId } } }), // Conexión correcta
+        membershipStartDate: planId ? new Date() : null,
+        membershipEndDate: planId 
+          ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 días
           : null,
       },
       include: {
