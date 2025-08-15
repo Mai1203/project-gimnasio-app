@@ -5,26 +5,11 @@ import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma"; 
 import type { Role } from "@prisma/client";
 
-// Función para obtener el hostname seguro
-const getCookieDomain = () => {
-  const url = process.env.NEXTAUTH_URL;
-  if (!url) return undefined;
-  
-  try {
-    // Añadir protocolo si falta
-    const fullUrl = url.startsWith('http') ? url : `https://${url}`;
-    return new URL(fullUrl).hostname;
-  } catch (error) {
-    console.error("Invalid NEXTAUTH_URL:", url);
-    return undefined;
-  }
-};
-
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 días
+    maxAge: 30 * 24 * 60 * 60,
   },
   providers: [
     CredentialsProvider({
@@ -73,7 +58,7 @@ const handler = NextAuth({
         sameSite: "lax",
         path: "/",
         secure: process.env.NODE_ENV === "production",
-        domain: getCookieDomain(), // Usamos la función segura aquí
+        // Eliminado el dominio para Vercel
       },
     },
   },
@@ -93,6 +78,7 @@ const handler = NextAuth({
       return session;
     },
   },
+  debug: process.env.NODE_ENV === "development",
 });
 
 export { handler as GET, handler as POST };
