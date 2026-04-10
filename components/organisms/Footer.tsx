@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="py-24 text-white bg-black border-t border-white/10 md:py-32">
+    <footer className="relative z-30 py-24 text-white bg-black border-t border-white/10 md:py-32">
       <div className="px-8 mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-4 lg:gap-32">
           {/* Logo y Manifesto */}
@@ -45,8 +45,8 @@ const Footer: React.FC = () => {
               <Image 
                 src="/Logo.svg" 
                 alt="Logo" 
-                width={20} 
-                height={20} 
+                width={32} 
+                height={32} 
                 className="object-contain brightness-0 invert" 
               />
               <span className="text-xs font-black tracking-[0.6em] uppercase">

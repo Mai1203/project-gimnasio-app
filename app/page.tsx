@@ -20,46 +20,43 @@ export default function Home() {
   const containerRef = useRef(null);
 
   return (
-    <div ref={containerRef} className="flex flex-col min-h-screen bg-white overflow-x-hidden">
-      {/* 🎬 HERO - LUXURY MINIMALISTA */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <div ref={containerRef} className="flex overflow-x-hidden flex-col min-h-screen bg-white snap-y snap-mandatory scroll-smooth">
+      {/* 🎬 HERO 1 - LUXURY MINIMALISTA */}
+      <section id="hero1" className="flex overflow-hidden relative flex-shrink-0 justify-center items-center h-screen snap-start snap-always">
         <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
+          <motion.div 
+            className="w-full h-full"
+            initial={{ filter: "blur(10px)" }}
+            whileInView={{ filter: "blur(0px)" }}
+            transition={{ duration: 1.5 }}
           >
-            <source src="https://www.pexels.com/download/video/33261219/" type="video/mp4" />
-          </video>
+            <video autoPlay muted loop playsInline className="object-cover w-full h-full">
+              <source src="https://www.pexels.com/download/video/33261219/" type="video/mp4" />
+            </video>
+          </motion.div>
           <div className="absolute inset-0 bg-black/40" />
         </div>
 
         <div className="container relative z-10 px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
           >
             <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.6em] uppercase text-white/70 mb-8 border-b border-white/20 pb-2">
               El Estándar de la Fuerza
             </span>
-            <h1 className="text-4xl md:text-7xl font-light text-white tracking-[0.2em] mb-10 uppercase leading-tight">
+            <h1 className="text-4xl md:text-8xl font-light text-white tracking-[0.3em] mb-12 uppercase leading-tight">
               ESTHETIC <span className="font-bold text-primary">GYM</span>
             </h1>
-            <p className="text-sm md:text-lg text-white/80 max-w-2xl mx-auto mb-12 font-light tracking-widest leading-relaxed">
+            <p className="mx-auto mb-16 max-w-2xl text-sm font-light tracking-widest leading-relaxed md:text-lg text-white/80">
               La convergencia entre el máximo rendimiento atlético y el diseño arquitectónico refinado. El entorno de entrenamiento más exclusivo de Colombia.
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <div className="flex flex-col gap-6 justify-center sm:flex-row">
               <Link href="/auth/register">
-                <button className="bg-primary text-white px-12 py-5 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-black transition-all duration-500">
+                <button className="bg-primary text-white px-16 py-6 text-[10px] font-black uppercase tracking-[0.5em] hover:bg-white hover:text-black transition-all duration-700">
                   Unirse a la Élite
-                </button>
-              </Link>
-              <Link href="/plans">
-                <button className="border border-white/30 text-white px-12 py-5 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white/10 transition-all duration-500">
-                  Explorar Planes
                 </button>
               </Link>
             </div>
@@ -67,12 +64,97 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ⚡ BENEFICIOS - MINIMALISMO TÉCNICO */}
-      <section className="py-24 md:py-32 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+      {/* 🎬 HERO 2 - TECNOLOGÍA Y PRECISIÓN */}
+      <section id="hero2" className="flex overflow-hidden relative flex-shrink-0 justify-center items-center h-screen snap-start snap-always">
+        <div className="absolute inset-0 z-0">
+          <motion.div 
+            className="w-full h-full"
+            initial={{ filter: "blur(10px)" }}
+            whileInView={{ filter: "blur(0px)" }}
+            transition={{ duration: 1.5 }}
+          >
+            <video autoPlay muted loop playsInline className="object-cover w-full h-full">
+              <source src="https://www.pexels.com/download/video/33261225/" type="video/mp4" />
+            </video>
+          </motion.div>
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+
+        <div className="container relative z-10 px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.6em] uppercase text-white/70 mb-8 border-b border-white/20 pb-2">
+              Ingeniería Aplicada
+            </span>
+            <h2 className="text-4xl md:text-8xl font-light text-white tracking-[0.3em] mb-12 uppercase leading-tight">
+              PRECISIÓN <br /><span className="font-bold text-primary">ANALÍTICA</span>
+            </h2>
+            <p className="mx-auto mb-16 max-w-3xl text-sm font-light tracking-widest leading-relaxed md:text-lg text-white/80">
+              Equipamiento de grado científico y biomecánica avanzada. En Esthetic Gym, cada repetición se diseña para una eficiencia absoluta y resultados estéticos superiores.
+            </p>
+            <div className="flex flex-col gap-6 justify-center sm:flex-row">
+              <Link href="/classes">
+                <button className="border border-white/30 text-white px-16 py-6 text-[10px] font-black uppercase tracking-[0.5em] hover:bg-white/10 transition-all duration-700">
+                  Disciplinas Técnicas
+                </button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 🎬 HERO 3 - MENTALIDAD Y LEGADO */}
+      <section id="hero3" className="flex overflow-hidden relative flex-shrink-0 justify-center items-center h-screen snap-start snap-always">
+        <div className="absolute inset-0 z-0">
+          <motion.div 
+            className="w-full h-full"
+            initial={{ filter: "blur(10px)" }}
+            whileInView={{ filter: "blur(0px)" }}
+            transition={{ duration: 1.5 }}
+          >
+            <video autoPlay muted loop playsInline className="object-cover w-full h-full">
+              <source src="https://www.pexels.com/download/video/33514738/" type="video/mp4" />
+            </video>
+          </motion.div>
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+
+        <div className="container relative z-10 px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 1.05 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.6em] uppercase text-white/70 mb-8 border-b border-white/20 pb-2">
+              Forja tu propia historia
+            </span>
+            <h2 className="text-4xl md:text-8xl font-light text-white tracking-[0.3em] mb-12 uppercase leading-tight">
+              TU <span className="italic font-bold text-primary">LEGADO</span> <br />COMIENZA AQUÍ
+            </h2>
+            <p className="mx-auto mb-16 max-w-2xl text-sm font-light tracking-widest leading-relaxed md:text-lg text-white/80">
+              No es solo entrenamiento. Es la arquitectura de tu mejor versión. Únete al colectivo que está definiendo la excelencia física en la nación.
+            </p>
+            <div className="flex flex-col gap-6 justify-center sm:flex-row">
+              <Link href="/auth/register">
+                <button className="bg-white text-black px-20 py-6 text-[10px] font-black uppercase tracking-[0.6em] hover:bg-primary hover:text-white transition-all duration-700">
+                  Solicitar Admisión
+                </button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ⚡ REST OF CONTENT - SILKY TRANSITION */}
+      <div className="relative z-10 bg-white snap-align-none">
+        <section className="py-24 bg-white md:py-32">
+        <div className="container px-6 mx-auto">
+          <div className="flex flex-col gap-8 justify-between items-end mb-20 md:flex-row">
             <div className="max-w-xl">
-              <h2 className="text-3xl md:text-4xl font-light tracking-widest uppercase mb-6 italic">Ingeniería <br /><span className="font-bold not-italic">Refinada</span></h2>
+              <h2 className="mb-6 text-3xl italic font-light tracking-widest uppercase md:text-4xl">Ingeniería <br /><span className="not-italic font-bold">Refinada</span></h2>
               <div className="w-20 h-[1px] bg-primary mb-6" />
               <p className="text-muted-foreground text-[10px] md:text-xs font-bold uppercase tracking-widest leading-loose">
                 Curamos cada detalle: desde equipos biomecánicamente precisos hasta la atmósfera sensorial de nuestros espacios. La perfección es nuestra única métrica.
@@ -80,7 +162,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-border/40">
+          <div className="grid grid-cols-1 gap-0 border md:grid-cols-3 border-border/40">
             {[
               { 
                 title: 'Alto Calibre', 
@@ -116,14 +198,14 @@ export default function Home() {
       </section>
 
       {/* 🧩 DISCIPLINAS - ESTILO GALERÍA */}
-      <section className="py-24 md:py-32 bg-secondary/5">
-        <div className="container mx-auto px-6 text-center mb-16">
+      <section className="py-24 md:py-32 bg-secondary/5 snap-align-none">
+        <div className="container px-6 mx-auto mb-16 text-center">
           <h2 className="text-[10px] font-black tracking-[0.6em] uppercase text-primary mb-4">Portafolio de Entrenamiento</h2>
-          <h3 className="text-3xl md:text-4xl font-light uppercase tracking-widest leading-none italic">Las Disciplinas</h3>
+          <h3 className="text-3xl italic font-light tracking-widest leading-none uppercase md:text-4xl">Las Disciplinas</h3>
         </div>
 
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="container px-6 mx-auto">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {[
               { 
                 title: 'Bodybuilding', 
@@ -141,9 +223,9 @@ export default function Home() {
                 <img 
                   src={cls.img} 
                   alt={cls.title} 
-                  className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                  className="object-cover absolute inset-0 w-full h-full transition-all duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-700" />
+                <div className="absolute inset-0 transition-all duration-700 bg-black/20 group-hover:bg-black/0" />
                 <div className="absolute bottom-10 left-10">
                   <h3 className="text-2xl font-light text-white uppercase tracking-[0.3em] italic">{cls.title}</h3>
                   <div className="w-10 h-[1px] bg-white mt-4 group-hover:w-20 transition-all duration-500" />
@@ -155,9 +237,9 @@ export default function Home() {
       </section>
 
       {/* ⭐ TESTIMONIO - ENFOQUE ESTÉTICO */}
-      <section className="py-32 md:py-48 bg-white text-center">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <blockquote className="text-2xl md:text-4xl font-light italic leading-loose text-foreground mb-16 tracking-widest">
+      <section className="py-32 text-center bg-white md:py-48 snap-align-none">
+        <div className="container px-6 mx-auto max-w-4xl">
+          <blockquote className="mb-16 text-2xl italic font-light tracking-widest leading-loose md:text-4xl text-foreground">
             "Esthetic Gym redefinió mi comprensión del rendimiento. Es donde la ciencia de élite se encuentra con una estética impecable."
           </blockquote>
           <div className="flex flex-col items-center">
@@ -169,12 +251,12 @@ export default function Home() {
 
       {/* 💸 PLANES - TABLA MINIMALISTA */}
       <section className="py-24 bg-secondary/5">
-        <div className="container mx-auto px-6 mb-20 text-center">
-          <h2 className="text-3xl md:text-4xl font-light uppercase tracking-widest italic">Membresías</h2>
+        <div className="container px-6 mx-auto mb-20 text-center">
+          <h2 className="text-3xl italic font-light tracking-widest uppercase md:text-4xl">Membresías</h2>
         </div>
 
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-border/40 bg-white">
+        <div className="container px-6 mx-auto">
+          <div className="grid grid-cols-1 gap-0 bg-white border lg:grid-cols-3 border-border/40">
             {[
               { name: 'Básico', price: '$89.900' },
               { name: 'Profesional', price: '$149.900', popular: true },
@@ -185,8 +267,8 @@ export default function Home() {
                 plan.popular && "bg-secondary/10"
               )}>
                 <h3 className="text-[10px] font-black uppercase tracking-[0.6em] mb-12 text-primary">{plan.name}</h3>
-                <div className="text-4xl md:text-5xl font-light tracking-tighter mb-12 italic">{plan.price}<span className="text-[10px] opacity-40 ml-2 tracking-widest uppercase not-italic">/Mensual</span></div>
-                <div className="space-y-4 mb-20 flex-1">
+                <div className="mb-12 text-4xl italic font-light tracking-tighter md:text-5xl">{plan.price}<span className="text-[10px] opacity-40 ml-2 tracking-widest uppercase not-italic">/Mensual</span></div>
+                <div className="flex-1 mb-20 space-y-4">
                   {['Acceso 24/7', 'App de Entrenamiento', 'Lockers'].map(f => (
                     <div key={f} className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground border-b border-border/20 pb-2">&mdash; {f}</div>
                   ))}
@@ -203,9 +285,9 @@ export default function Home() {
       </section>
 
       {/* CTA - EL FINAL DE LUJO */}
-      <section className="py-32 md:py-48 bg-white border-t border-border/20 relative overflow-hidden">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-6xl font-light text-foreground tracking-[0.3em] uppercase mb-16 leading-tight">Comienza Tu <br /><span className="font-bold not-italic">Legado.</span></h2>
+      <section className="overflow-hidden relative py-32 bg-white border-t md:py-48 border-border/20">
+        <div className="container px-6 mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-light text-foreground tracking-[0.3em] uppercase mb-16 leading-tight">Comienza Tu <br /><span className="not-italic font-bold">Legado.</span></h2>
           <Link href="/auth/register">
             <button className="bg-primary text-white border border-primary px-20 py-6 text-[10px] font-black uppercase tracking-[0.5em] hover:bg-transparent hover:text-primary transition-all duration-500">
               Solicitar Admisión
@@ -215,5 +297,6 @@ export default function Home() {
         </div>
       </section>
     </div>
-  );
+  </div>
+);
 }

@@ -31,9 +31,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
-  const { login } = useApp();
   const router = useRouter();
 
   const {
@@ -55,7 +53,7 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setLoginError('Email o contraseña incorrectos');
+      setLoginError('Credenciales inválidas');
     } else {
       router.push('/dashboard');
     }
@@ -64,144 +62,130 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      {/* Background decorativo */}
-      <div className="absolute inset-0 bg-background">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      {/* 🎬 HIGH-END BACKGROUND */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=2000" 
+          alt="Luxury Gym" 
+          className="w-full h-full object-cover opacity-40 grayscale transition-all duration-[3000ms] hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black" />
       </div>
 
-      <div className="relative w-full max-w-md space-y-8">
-        {/* Header */}
+      <div className="relative z-10 w-full max-w-lg px-8 py-12">
+        {/* HEADER */}
         <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: -30 }}
+          className="text-center mb-16 pt-20"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* Botón de regreso */}
-          <Link
-            href="/"
-            className="mb-8 inline-flex items-center space-x-2 text-muted-foreground transition-colors duration-200 hover:text-foreground"
-          >
-            <ArrowLeft size={20} />
-            <span>Volver al inicio</span>
+          <Link href="/" className="inline-block mb-12">
+            <span className="text-[10px] font-black tracking-[0.8em] uppercase text-primary italic">
+              E S T H E T I C
+            </span>
+            <h1 className="text-3xl font-light text-white tracking-[0.4em] mt-10 uppercase">
+              ACCESO <span className="font-bold">ÉLITE</span>
+            </h1>
           </Link>
-
-          {/* Logo y título */}
-          <div className="mb-6 flex justify-center">
-            <div className="rounded-2xl bg-primary p-4 shadow-2xl">
-              <LogIn className="h-8 w-8 text-primary-foreground" />
-            </div>
-          </div>
-
-          <h2 className="mb-2 text-3xl font-bold text-foreground">Iniciar Sesión</h2>
-          <p className="text-muted-foreground">Accede a tu cuenta de Esthetic Gym</p>
+          <div className="w-12 h-[1px] bg-primary mx-auto opacity-50" />
         </motion.div>
 
-        {/* Formulario de login */}
-        <AnimatedCard variant="glass">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-8">
-            {/* Error general */}
-            {loginError && (
-              <motion.div
-                className="rounded-lg border border-destructive/20 bg-destructive/10 p-4"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <p className="text-center text-sm text-destructive">{loginError}</p>
-              </motion.div>
-            )}
+        {/* FORM */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        >
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-10 md:p-16 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+              {loginError && (
+                <div className="text-[10px] text-primary font-black uppercase tracking-[0.3em] text-center border-b border-primary/20 pb-4">
+                  {loginError}
+                </div>
+              )}
 
-            {/* Campo Email */}
-            <div>
-              <AnimatedInput
-                {...register('email')}
-                type="email"
-                label="Email"
-                icon={<Mail size={18} />}
-                error={errors.email?.message}
-                placeholder="tu@email.com"
-              />
-            </div>
-
-            {/* Campo Password */}
-            <div>
-              <AnimatedInput
-                {...register('password')}
-                type="password"
-                label="Contraseña"
-                icon={<Lock size={18} />}
-                error={errors.password?.message}
-                placeholder="Tu contraseña"
-              />
-            </div>
-
-            {/* Opciones adicionales */}
-            <div className="flex items-center justify-between">
-              <label className="flex items-center space-x-2 text-sm">
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
+                  Identidad / Email
+                </label>
                 <input
-                  type="checkbox"
-                  className="rounded border-border bg-background text-primary focus:ring-primary h-4 w-4"
+                  {...register('email')}
+                  type="email"
+                  className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/10"
+                  placeholder="USUARIO@ELITE.COM"
                 />
-                <span className="text-foreground font-medium">Recordarme</span>
-              </label>
+                {errors.email && (
+                  <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block">
+                    {errors.email.message}
+                  </span>
+                )}
+              </div>
 
-              <Link
-                href="/auth/forgot-password"
-                className="text-sm text-primary font-medium transition-colors hover:text-primary/80"
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
+                  Protocolo / Contraseña
+                </label>
+                <input
+                  {...register('password')}
+                  type="password"
+                  className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/10"
+                  placeholder="••••••••"
+                />
+                {errors.password && (
+                  <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block">
+                    {errors.password.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between pt-4">
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] hover:text-primary transition-colors italic"
+                >
+                  ¿Olvido de Credenciales?
+                </Link>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-white text-black py-6 text-[10px] font-black uppercase tracking-[0.6em] hover:bg-primary hover:text-white transition-all duration-700 disabled:opacity-50 group overflow-hidden relative"
               >
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </div>
-
-            {/* Botón de envío */}
-            <AnimatedButton
-              type="submit"
-              size="lg"
-              loading={isLoading}
-              className="w-full"
-              icon={<LogIn size={20} />}
-            >
-              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </AnimatedButton>
-
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="bg-background px-2 text-muted-foreground">
-                  ¿No tienes cuenta?
+                <span className="relative z-10">
+                  {isLoading ? 'VERIFICANDO...' : 'RECLAMAR ACCESO'}
                 </span>
+                <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+              </button>
+
+              <div className="pt-8 text-center">
+                <p className="text-[10px] text-white/40 font-bold uppercase tracking-[0.3em]">
+                  ¿Sin Membresía?{' '}
+                  <Link href="/auth/register" className="text-primary hover:text-white transition-colors">
+                    Solicitar Admisión
+                  </Link>
+                </p>
               </div>
-            </div>
+            </form>
+          </div>
+        </motion.div>
 
-            {/* Link a registro */}
-            <Link href="/auth/register">
-              <AnimatedButton variant="outline" size="lg" className="w-full">
-                Crear cuenta nueva
-              </AnimatedButton>
-            </Link>
-          </form>
-        </AnimatedCard>
-
-        {/* Footer */}
-        <motion.p
-          className="text-center text-sm text-muted-foreground"
+        {/* FOOTER */}
+        <motion.div
+          className="mt-16 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 1 }}
         >
-          Al iniciar sesión, aceptas nuestros{' '}
-          <Link href="/terms" className="text-primary hover:text-primary/80 font-medium">
-            Términos de Servicio
-          </Link>{' '}
-          y{' '}
-          <Link href="/privacy" className="text-primary hover:text-primary/80 font-medium">
-            Política de Privacidad
+          <Link href="/" className="inline-flex items-center space-x-4 text-[10px] font-bold uppercase tracking-[0.5em] text-white/30 hover:text-white transition-all duration-500">
+            <ArrowLeft size={14} />
+            <span>Regresar al Origen</span>
           </Link>
-        </motion.p>
+        </motion.div>
       </div>
     </div>
   );

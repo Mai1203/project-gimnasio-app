@@ -22,10 +22,10 @@ import {
 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 
-import { useApp } from '@/context/AppContext';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedInput } from '@/components/ui/animated-input';
 import { AnimatedCard } from '@/components/ui/animated-card';
+import { cn } from '@/lib/utils';
 
 // Schema de validación con Zod
 const registerSchema = z
@@ -62,7 +62,6 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [registerError, setRegisterError] = useState('');
-  const { register: registerUser } = useApp();
   const router = useRouter();
 
   const {
@@ -76,7 +75,6 @@ export default function RegisterPage() {
 
   const password = watch('password', '');
 
-  // Función para verificar la fuerza de la contraseña
   const getPasswordStrength = (password: string) => {
     let score = 0;
     if (password.length >= 8) score++;
@@ -85,11 +83,9 @@ export default function RegisterPage() {
     if (/\d/.test(password)) score++;
     if (/[^a-zA-Z\d]/.test(password)) score++;
 
-    if (score < 2)
-      return { strength: 'Débil', color: 'bg-red-500', width: '20%' };
-    if (score < 4)
-      return { strength: 'Media', color: 'bg-yellow-500', width: '60%' };
-    return { strength: 'Fuerte', color: 'bg-green-500', width: '100%' };
+    if (score < 2) return { strength: 'DÉBIL', color: 'bg-primary' };
+    if (score < 4) return { strength: 'MEDIA', color: 'bg-yellow-500' };
+    return { strength: 'SÓLIDA', color: 'bg-green-500' };
   };
 
   const passwordStrength = password ? getPasswordStrength(password) : null;
@@ -113,12 +109,11 @@ export default function RegisterPage() {
       const result = await res.json();
 
       if (!res.ok) {
-        setRegisterError(result.error || 'Error al crear la cuenta');
+        setRegisterError(result.error || 'Error al procesar solicitud');
         setIsLoading(false);
         return;
       }
 
-      // Login automático después de registrarse
       const loginRes = await signIn('credentials', {
         redirect: true,
         email: data.email,
@@ -127,221 +122,197 @@ export default function RegisterPage() {
       });
 
       if (loginRes?.error) {
-        setRegisterError('Cuenta creada pero error al iniciar sesión');
+        setRegisterError('Cuenta creada pero error al autenticar');
       } else {
         router.push('/dashboard');
       }
     } catch (error) {
-      setRegisterError('Error al registrarse. Intenta de nuevo.');
+      setRegisterError('Error técnico de conexión. Intente luego.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      {/* Background decorativo */}
-      <div className="absolute inset-0 bg-background">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+    <div className="relative min-h-screen flex items-center justify-center overflow-y-auto bg-black py-32 px-8">
+      {/* 🎬 HIGH-END BACKGROUND */}
+      <div className="fixed inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80&w=2000" 
+          alt="Elite Performance" 
+          className="w-full h-full object-cover opacity-30 grayscale transition-all duration-1000"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/20 to-black z-10" />
       </div>
 
-      <div className="relative w-full max-w-md space-y-8">
-        {/* Header */}
+      <div className="relative z-20 w-full max-w-2xl py-20">
+        {/* HEADER */}
         <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: -30 }}
+          className="text-center mb-16 pt-24"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* Botón de regreso */}
-          <Link
-            href="/"
-            className="mb-8 inline-flex items-center space-x-2 text-muted-foreground transition-colors duration-200 hover:text-foreground"
-          >
-            <ArrowLeft size={20} />
-            <span>Volver al inicio</span>
-          </Link>
-
-          {/* Logo y título */}
-          <div className="mb-6 flex justify-center">
-            <div className="rounded-2xl bg-primary p-4 shadow-2xl">
-              <UserPlus className="h-8 w-8 text-primary-foreground" />
-            </div>
-          </div>
-
-          <h2 className="mb-2 text-3xl font-bold text-foreground">Crear Cuenta</h2>
-          <p className="text-muted-foreground">Únete a la comunidad Esthetic Gym</p>
+          <span className="text-[10px] font-black tracking-[0.8em] uppercase text-primary italic mb-4 block">
+            ADMISIÓN COLECTIVA
+          </span>
+          <h1 className="text-4xl md:text-5xl font-light text-white tracking-[0.4em] mt-16 mb-4 uppercase">
+            RECLAMAR <span className="font-bold">LEGADO</span>
+          </h1>
+          <div className="w-16 h-[1px] bg-primary mx-auto opacity-40" />
         </motion.div>
 
-        {/* Formulario de registro */}
-        <AnimatedCard variant="glass">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-8">
-            {/* Error general */}
-            {registerError && (
-              <motion.div
-                className="rounded-lg border border-destructive/20 bg-destructive/10 p-4"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <p className="text-center text-sm text-destructive">
+        {/* FORM */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        >
+          <div className="bg-white/5 backdrop-blur-2xl border border-white/10 p-10 md:p-20 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
+              {registerError && (
+                <div className="text-[10px] text-primary font-black uppercase tracking-[0.3em] text-center border-b border-primary/20 pb-4">
                   {registerError}
-                </p>
-              </motion.div>
-            )}
-
-            {/* Campo Nombre */}
-            <div>
-              <AnimatedInput
-                {...register('name')}
-                type="text"
-                label="Nombre completo"
-                icon={<User size={18} />}
-                error={errors.name?.message}
-                placeholder="Tu nombre completo"
-              />
-            </div>
-
-            {/* Campo Email */}
-            <div>
-              <AnimatedInput
-                {...register('email')}
-                type="email"
-                label="Email"
-                icon={<Mail size={18} />}
-                error={errors.email?.message}
-                placeholder="tu@email.com"
-              />
-            </div>
-
-            {/* Campo Teléfono */}
-            <div>
-              <AnimatedInput
-                {...register('phone')}
-                type="tel"
-                label="Teléfono"
-                icon={<Phone size={18} />}
-                error={errors.phone?.message}
-                placeholder="+52 123 456 7890"
-              />
-            </div>
-
-            {/* Campo Password */}
-            <div>
-              <AnimatedInput
-                {...register('password')}
-                type="password"
-                label="Contraseña"
-                icon={<Lock size={18} />}
-                error={errors.password?.message}
-                placeholder="Tu contraseña"
-              />
-
-              {/* Indicador de fuerza de contraseña */}
-              {password && passwordStrength && (
-                <motion.div
-                  className="mt-2"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className="h-1 flex-1 rounded-full bg-border">
-                      <div
-                        className={`h-1 rounded-full transition-all duration-300 ${passwordStrength.color}`}
-                        style={{ width: passwordStrength.width }}
-                      />
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {passwordStrength.strength}
-                    </span>
-                  </div>
-                </motion.div>
+                </div>
               )}
-            </div>
 
-            {/* Campo Confirmar Password */}
-            <div>
-              <AnimatedInput
-                {...register('confirmPassword')}
-                type="password"
-                label="Confirmar contraseña"
-                icon={<CheckCircle size={18} />}
-                error={errors.confirmPassword?.message}
-                placeholder="Confirma tu contraseña"
-              />
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
+                    Identidad / Nombre
+                  </label>
+                  <input
+                    {...register('name')}
+                    className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
+                    placeholder="NOMBRE COMPLETO"
+                  />
+                  {errors.name && (
+                    <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block italic">{errors.name.message}</span>
+                  )}
+                </div>
 
-            {/* Términos y condiciones */}
-            <div className="flex items-start space-x-3">
-              <input
-                {...register('terms')}
-                type="checkbox"
-                className="mt-1 rounded border-border bg-background text-primary focus:ring-primary h-4 w-4"
-              />
-              <label className="text-sm text-foreground">
-                Acepto los{' '}
-                <Link
-                  href="/terms"
-                  className="text-primary hover:text-primary/80 font-medium"
-                >
-                  términos y condiciones
-                </Link>{' '}
-                y la{' '}
-                <Link
-                  href="/privacy"
-                  className="text-primary hover:text-primary/80 font-medium"
-                >
-                  política de privacidad
-                </Link>
-              </label>
-            </div>
-
-            {errors.terms && (
-              <p className="text-sm text-red-400">{errors.terms.message}</p>
-            )}
-
-            {/* Botón de envío */}
-            <AnimatedButton
-              type="submit"
-              size="lg"
-              loading={isLoading}
-              className="w-full"
-              icon={<UserPlus size={20} />}
-            >
-              {isLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
-            </AnimatedButton>
-
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
+                    Enlace / Email
+                  </label>
+                  <input
+                    {...register('email')}
+                    className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
+                    placeholder="USUARIO@ELITE.COM"
+                  />
+                  {errors.email && (
+                    <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block italic">{errors.email.message}</span>
+                  )}
+                </div>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="bg-background px-2 text-muted-foreground">
-                  ¿Ya tienes cuenta?
-                </span>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
+                  Contacto / Teléfono
+                </label>
+                <input
+                  {...register('phone')}
+                  className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
+                  placeholder="+57 -- --- ---"
+                />
+                {errors.phone && (
+                  <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block italic">{errors.phone.message}</span>
+                )}
               </div>
-            </div>
 
-            {/* Link a login */}
-            <Link href="/auth/login">
-              <AnimatedButton variant="outline" size="lg" className="w-full">
-                Iniciar sesión
-              </AnimatedButton>
-            </Link>
-          </form>
-        </AnimatedCard>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
+                    Protocolo / Contraseña
+                  </label>
+                  <input
+                    {...register('password')}
+                    type="password"
+                    className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
+                    placeholder="••••••••"
+                  />
+                  {passwordStrength && (
+                    <div className="mt-4 flex items-center space-x-3">
+                      <div className="h-[2px] w-20 bg-white/10 overflow-hidden">
+                        <div className={cn("h-full transition-all duration-500", passwordStrength.color, passwordStrength.strength === 'DÉBIL' ? 'w-1/3' : passwordStrength.strength === 'MEDIA' ? 'w-2/3' : 'w-full')} />
+                      </div>
+                      <span className="text-[8px] font-black tracking-widest uppercase opacity-40">{passwordStrength.strength}</span>
+                    </div>
+                  )}
+                  {errors.password && (
+                    <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block italic">{errors.password.message}</span>
+                  )}
+                </div>
 
-        {/* Footer */}
-        <motion.p
-          className="text-center text-sm text-muted-foreground"
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
+                    Verificación
+                  </label>
+                  <input
+                    {...register('confirmPassword')}
+                    type="password"
+                    className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
+                    placeholder="••••••••"
+                  />
+                  {errors.confirmPassword && (
+                    <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block italic">{errors.confirmPassword.message}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4 pt-4">
+                <input
+                  {...register('terms')}
+                  type="checkbox"
+                  className="mt-1 w-4 h-4 bg-transparent border border-white/20 text-primary focus:ring-0 focus:outline-none cursor-pointer"
+                />
+                <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/50 leading-relaxed">
+                  Confirmo mi adhesión a los{' '}
+                  <Link href="/terms" className="text-primary hover:text-white underline decoration-primary/20 transition-all">
+                    Términos de Código
+                  </Link>{' '}
+                  y{' '}
+                  <Link href="/privacy" className="text-primary hover:text-white underline decoration-primary/20 transition-all">
+                    Privacidad
+                  </Link>
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-white text-black py-7 text-[10px] font-black uppercase tracking-[0.8em] hover:bg-primary hover:text-white transition-all duration-700 disabled:opacity-50 group relative overflow-hidden"
+              >
+                <span className="relative z-10">{isLoading ? 'PROCESANDO SOLICITUD...' : 'RECLAMAR ADMISIÓN'}</span>
+                <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+              </button>
+
+              <div className="pt-8 text-center">
+                <p className="text-[10px] text-white/30 font-bold uppercase tracking-[0.4em]">
+                  ¿Ya eres parte del colectivo?{' '}
+                  <Link href="/auth/login" className="text-primary hover:text-white transition-colors">
+                    Reclamar Acceso
+                  </Link>
+                </p>
+              </div>
+            </form>
+          </div>
+        </motion.div>
+
+        {/* FOOTER */}
+        <motion.div
+          className="mt-20 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 1 }}
         >
-          Al crear una cuenta, aceptas nuestros términos de servicio y política
-          de privacidad.
-        </motion.p>
+          <Link href="/" className="inline-flex items-center space-x-4 text-[10px] font-bold uppercase tracking-[0.6em] text-white/20 hover:text-white transition-all duration-500">
+            <ArrowLeft size={16} />
+            <span>Abandonar Proceso</span>
+          </Link>
+        </motion.div>
       </div>
     </div>
   );
