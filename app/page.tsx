@@ -1,379 +1,217 @@
 'use client';
-import { useState, useEffect } from 'react';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { 
+  Dumbbell, 
+  Users, 
+  Zap, 
+  CheckCircle2, 
+  Star, 
+  Play, 
+  ArrowRight,
+} from 'lucide-react';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedCard } from '@/components/ui/animated-card';
-import {
-  Dumbbell,
-  Users,
-  Trophy,
-  Heart,
-  Target,
-  Zap,
-  Star,
-  ArrowRight,
-  PlayCircle,
-  CheckCircle,
-} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export default function HomePage() {
-  const [isMobile, setIsmobile] = useState(false);
-  // Datos de estadísticas del gimnasio
-  const gymStats = [
-    { number: '1000+', label: 'Miembros Activos', icon: Users },
-    { number: '50+', label: 'Entrenadoras Expertos', icon: Target },
-    { number: '15+', label: 'Años de Experiencia', icon: Trophy },
-    { number: '24/7', label: 'Acceso Disponible', icon: Zap },
-  ];
-
-  // Características principales
-  const features = [
-    {
-      icon: Dumbbell,
-      title: 'Equipamiento Profesional',
-      description:
-        'Maquinas de última generación y pesas libres para todos los niveles.',
-    },
-    {
-      icon: Heart,
-      title: 'Entrenamiento Personalizado',
-      description:
-        'Planes diseñados específicamente para tus objetivos y nivel fitness.',
-    },
-    {
-      icon: Users,
-      title: 'Comunidad Motivadora',
-      description:
-        'Únete a una comunidad que te apoya en cada paso de tu transformación.',
-    },
-    {
-      icon: Trophy,
-      title: 'Resultados Comprobados',
-      description:
-        'Miles de historias de éxito respaldan nuestros métodos de entrenamiento.',
-    },
-  ];
-
-  // Testimonios
-  const testimonials = [
-    {
-      name: 'Carlos Mendoza',
-      role: 'Miembro VIP',
-      content:
-        'PowerGym cambió mi vida completamente. Los entrenadoras son excepcionales y las instalaciones de primera clase.',
-      rating: 5,
-      avatar:
-        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
-    },
-    {
-      name: 'María García',
-      role: 'Miembro Premium',
-      content:
-        'El ambiente motivador y el apoyo del equipo me ayudaron a alcanzar mis metas más rápido de lo que imaginé.',
-      rating: 5,
-      avatar:
-        'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
-    },
-    {
-      name: 'Juan Pérez',
-      role: 'Miembro Básico',
-      content:
-        'Increíble relación calidad-precio. Las instalaciones son modernas y el personal muy profesional.',
-      rating: 5,
-      avatar:
-        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
-    },
-  ];
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsmobile(window.innerWidth < 640);
-    };
-
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+export default function Home() {
+  const containerRef = useRef(null);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        {/* Background Image */}
+    <div ref={containerRef} className="flex flex-col min-h-screen bg-white overflow-x-hidden">
+      {/* 🎬 HERO - LUXURY MINIMALISTA */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 z-10 bg-gradient-to-br from-black/70 via-slate-900/60 to-black/70" />
-
-          <picture>
-            {/* Imagen para móvil */}
-            <source
-              media="(max-width: 768px)"
-              srcSet="https://images.pexels.com/photos/2468339/pexels-photo-2468339.jpeg?auto=compress&cs=tinysrgb&w=1080&h=1920&dpr=2"
-            />
-            {/* Imagen para desktop */}
-            <source
-              media="(min-width: 769px)"
-              srcSet="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=2560&h=1440&dpr=2"
-            />
-
-            {/* Fallback */}
-            <img
-              src="https://images.pexels.com/photos/2261477/pexels-photo-2261477.jpeg?auto=compress&cs=tinysrgb&w=2560&h=1440&dpr=2"
-              alt="Gimnasio moderno"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </picture>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="https://www.pexels.com/download/video/33261219/" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/40" />
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-20 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="container relative z-10 px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <motion.h1
-              className="mb-6 text-4xl font-bold leading-tight text-white sm:text-6xl lg:text-7xl"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              Transforma tu
-              <span className="block bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Cuerpo y Mente
-              </span>
-            </motion.h1>
-
-            <motion.p
-              className="mx-auto mb-8 max-w-3xl text-xl leading-relaxed text-gray-200 sm:text-2xl"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Únete a PowerGym y descubre el poder que llevas dentro. Con
-              equipamiento de última generación y entrenadoras expertos, tu
-              transformación comienza aquí.
-            </motion.p>
-
-            <motion.div
-              className="flex flex-col items-center justify-center gap-4 sm:flex-row"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
+            <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.6em] uppercase text-white/70 mb-8 border-b border-white/20 pb-2">
+              El Estándar de la Fuerza
+            </span>
+            <h1 className="text-4xl md:text-7xl font-light text-white tracking-[0.2em] mb-10 uppercase leading-tight">
+              ESTHETIC <span className="font-bold text-primary">GYM</span>
+            </h1>
+            <p className="text-sm md:text-lg text-white/80 max-w-2xl mx-auto mb-12 font-light tracking-widest leading-relaxed">
+              La convergencia entre el máximo rendimiento atlético y el diseño arquitectónico refinado. El entorno de entrenamiento más exclusivo de Colombia.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link href="/auth/register">
-                <AnimatedButton size="xl" icon={<Zap />}>
-                  Comienza Ahora
-                </AnimatedButton>
+                <button className="bg-primary text-white px-12 py-5 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-black transition-all duration-500">
+                  Unirse a la Élite
+                </button>
               </Link>
+              <Link href="/plans">
+                <button className="border border-white/30 text-white px-12 py-5 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white/10 transition-all duration-500">
+                  Explorar Planes
+                </button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
-              <motion.button
-                className="flex items-center gap-3 rounded-lg border-2 border-white/30 px-6 py-3 text-white transition-all duration-300 hover:bg-white/10"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+      {/* ⚡ BENEFICIOS - MINIMALISMO TÉCNICO */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+            <div className="max-w-xl">
+              <h2 className="text-3xl md:text-4xl font-light tracking-widest uppercase mb-6 italic">Ingeniería <br /><span className="font-bold not-italic">Refinada</span></h2>
+              <div className="w-20 h-[1px] bg-primary mb-6" />
+              <p className="text-muted-foreground text-[10px] md:text-xs font-bold uppercase tracking-widest leading-loose">
+                Curamos cada detalle: desde equipos biomecánicamente precisos hasta la atmósfera sensorial de nuestros espacios. La perfección es nuestra única métrica.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-border/40">
+            {[
+              { 
+                title: 'Alto Calibre', 
+                desc: 'Discos de competición y barras personalizadas diseñadas para deflexión cero.',
+                icon: <Dumbbell className="w-5 h-5" />
+              },
+              { 
+                title: 'Sala Técnica', 
+                desc: 'Entornos dedicados para levantamiento olímpico e hipertrofia de precisión.',
+                icon: <Zap className="w-5 h-5" />
+              },
+              { 
+                title: 'Óptima Humana', 
+                desc: 'Evaluaciones fisiológicas avanzadas para alcanzar tu máximo techo genético.',
+                icon: <Users className="w-5 h-5" />
+              }
+            ].map((benefit, i) => (
+              <div
+                key={i}
+                className="p-12 md:p-16 border-r border-b last:border-r-0 md:[&:nth-child(3)]:border-r-0 border-border/40 hover:bg-secondary/5 transition-colors duration-500"
               >
-                <PlayCircle size={24} />
-                <span className="font-semibold">Ver Tour Virtual</span>
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 transform"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="flex h-10 w-6 justify-center rounded-full border-2 border-white/30">
-            <div className="mt-2 h-3 w-1 rounded-full bg-white" />
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="bg-gradient-to-r from-slate-900/50 to-slate-800/50 py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {gymStats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <motion.div
-                  key={index}
-                  className="text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="mb-4 flex justify-center">
-                    <div className="rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-600/20 p-4">
-                      <Icon className="h-8 w-8 text-amber-400" />
-                    </div>
-                  </div>
-                  <div className="mb-2 text-3xl font-bold text-white lg:text-4xl">
-                    {stat.number}
-                  </div>
-                  <div className="font-medium text-gray-400">{stat.label}</div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="bg-gradient-to-b from-transparent to-slate-900/30 py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-              ¿Por qué elegir
-              <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-                {' '}
-                PowerGym
-              </span>
-              ?
-            </h2>
-            <p className="mx-auto max-w-3xl text-xl text-gray-300">
-              Descubre las características que nos hacen el gimnasio líder en
-              transformación física y mental.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <AnimatedCard key={index} variant="glass" delay={index * 0.1}>
-                  <div className="p-6 text-center">
-                    <div className="mb-6 flex justify-center">
-                      <div className="rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-600/20 p-4">
-                        <Icon className="h-8 w-8 text-amber-400" />
-                      </div>
-                    </div>
-                    <h3 className="mb-4 text-xl font-bold text-white">
-                      {feature.title}
-                    </h3>
-                    <p className="leading-relaxed text-gray-400">
-                      {feature.description}
-                    </p>
-                  </div>
-                </AnimatedCard>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="bg-gradient-to-r from-slate-900/50 to-slate-800/50 py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
-              Historias de
-              <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-                Éxito
-              </span>
-            </h2>
-            <p className="mx-auto max-w-2xl text-xl text-gray-300">
-              Conoce las experiencias de nuestros miembros y cómo PowerGym
-              cambió sus vidas.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <AnimatedCard key={index} variant="glass" delay={index * 0.2}>
-                <div className="p-6">
-                  {/* Rating */}
-                  <div className="mb-4 flex justify-center">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="h-5 w-5 fill-current text-amber-400"
-                      />
-                    ))}
-                  </div>
-
-                  {/* Content */}
-                  <blockquote className="mb-6 text-center italic text-gray-300">
-                    "{testimonial.content}"
-                  </blockquote>
-
-                  {/* Author */}
-                  <div className="flex items-center justify-center space-x-4">
-                    <img
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
-                      className="h-12 w-12 rounded-full border-2 border-amber-500/30 object-cover"
-                    />
-                    <div className="text-left">
-                      <div className="font-semibold text-white">
-                        {testimonial.name}
-                      </div>
-                      <div className="text-sm text-amber-400">
-                        {testimonial.role}
-                      </div>
-                    </div>
-                  </div>
+                <div className="mb-10 text-primary">
+                  {benefit.icon}
                 </div>
-              </AnimatedCard>
+                <h3 className="text-sm font-black mb-6 uppercase tracking-[0.2em]">{benefit.title}</h3>
+                <p className="text-muted-foreground text-[10px] leading-relaxed uppercase tracking-widest font-bold">
+                  {benefit.desc}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-red-500/10 py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-              ¿Listo para transformarte?
-            </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-xl text-gray-300">
-              No esperes más para comenzar tu journey hacia una versión mejor de
-              ti mismo. Únete a PowerGym hoy y descubre tu verdadero potencial.
-            </p>
+      {/* 🧩 DISCIPLINAS - ESTILO GALERÍA */}
+      <section className="py-24 md:py-32 bg-secondary/5">
+        <div className="container mx-auto px-6 text-center mb-16">
+          <h2 className="text-[10px] font-black tracking-[0.6em] uppercase text-primary mb-4">Portafolio de Entrenamiento</h2>
+          <h3 className="text-3xl md:text-4xl font-light uppercase tracking-widest leading-none italic">Las Disciplinas</h3>
+        </div>
 
-            <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/auth/register">
-                <AnimatedButton size="xl" icon={<CheckCircle />}>
-                  Únete Ahora
-                </AnimatedButton>
-              </Link>
-              <Link href="/plans">
-                <AnimatedButton
-                  variant="outline"
-                  size="xl"
-                  icon={<ArrowRight />}
-                >
-                  Ver Planes
-                </AnimatedButton>
-              </Link>
-            </div>
-          </motion.div>
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {[
+              { 
+                title: 'Bodybuilding', 
+                img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&q=80&w=1200' 
+              },
+              { 
+                title: 'Weightlifting', 
+                img: 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?auto=format&fit=crop&q=80&w=1200' 
+              }
+            ].map((cls, i) => (
+              <motion.div 
+                key={i}
+                className="relative h-[300px] md:h-[450px] overflow-hidden group border border-border/50"
+              >
+                <img 
+                  src={cls.img} 
+                  alt={cls.title} 
+                  className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-700" />
+                <div className="absolute bottom-10 left-10">
+                  <h3 className="text-2xl font-light text-white uppercase tracking-[0.3em] italic">{cls.title}</h3>
+                  <div className="w-10 h-[1px] bg-white mt-4 group-hover:w-20 transition-all duration-500" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ⭐ TESTIMONIO - ENFOQUE ESTÉTICO */}
+      <section className="py-32 md:py-48 bg-white text-center">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <blockquote className="text-2xl md:text-4xl font-light italic leading-loose text-foreground mb-16 tracking-widest">
+            "Esthetic Gym redefinió mi comprensión del rendimiento. Es donde la ciencia de élite se encuentra con una estética impecable."
+          </blockquote>
+          <div className="flex flex-col items-center">
+            <div className="text-[10px] font-black uppercase tracking-[0.5em] mb-2">Markus Vargas</div>
+            <div className="text-[10px] text-primary font-bold uppercase tracking-[0.3em]">Atleta Olímpico</div>
+          </div>
+        </div>
+      </section>
+
+      {/* 💸 PLANES - TABLA MINIMALISTA */}
+      <section className="py-24 bg-secondary/5">
+        <div className="container mx-auto px-6 mb-20 text-center">
+          <h2 className="text-3xl md:text-4xl font-light uppercase tracking-widest italic">Membresías</h2>
+        </div>
+
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-border/40 bg-white">
+            {[
+              { name: 'Básico', price: '$89.900' },
+              { name: 'Profesional', price: '$149.900', popular: true },
+              { name: 'Élite', price: '$269.900' }
+            ].map((plan, i) => (
+              <div key={i} className={cn(
+                "p-12 md:p-16 border-r last:border-r-0 border-border/40 flex flex-col transition-all duration-500 hover:bg-secondary/5",
+                plan.popular && "bg-secondary/10"
+              )}>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.6em] mb-12 text-primary">{plan.name}</h3>
+                <div className="text-4xl md:text-5xl font-light tracking-tighter mb-12 italic">{plan.price}<span className="text-[10px] opacity-40 ml-2 tracking-widest uppercase not-italic">/Mensual</span></div>
+                <div className="space-y-4 mb-20 flex-1">
+                  {['Acceso 24/7', 'App de Entrenamiento', 'Lockers'].map(f => (
+                    <div key={f} className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground border-b border-border/20 pb-2">&mdash; {f}</div>
+                  ))}
+                </div>
+                <Link href="/plans">
+                  <button className="w-full py-5 text-[10px] font-black uppercase tracking-[0.4em] border border-black text-black hover:bg-black hover:text-white transition-all duration-500">
+                    Descubrir Acceso
+                  </button>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA - EL FINAL DE LUJO */}
+      <section className="py-32 md:py-48 bg-white border-t border-border/20 relative overflow-hidden">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-6xl font-light text-foreground tracking-[0.3em] uppercase mb-16 leading-tight">Comienza Tu <br /><span className="font-bold not-italic">Legado.</span></h2>
+          <Link href="/auth/register">
+            <button className="bg-primary text-white border border-primary px-20 py-6 text-[10px] font-black uppercase tracking-[0.5em] hover:bg-transparent hover:text-primary transition-all duration-500">
+              Solicitar Admisión
+            </button>
+          </Link>
+          <p className="mt-16 text-muted-foreground text-[10px] font-bold tracking-[0.6em] uppercase">Esthetic Gym &copy; 2024</p>
         </div>
       </section>
     </div>

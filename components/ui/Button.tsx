@@ -5,7 +5,12 @@ import { cn } from '@/lib/utils';
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 
 //  Tipado de variantes
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'danger'
+  | 'outline';
 
 //  Función para obtener las clases según la variante
 export const buttonVariants = (variant: ButtonVariant = 'primary') => {
@@ -15,7 +20,6 @@ export const buttonVariants = (variant: ButtonVariant = 'primary') => {
     ghost: 'btn-ghost',
     danger: 'btn-danger',
     outline: 'btn-outline',
-    
   };
   return variants[variant];
 };
@@ -31,7 +35,8 @@ const buttonSizes = {
 
 //  Props del botón
 export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof MotionProps>,
+  extends
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof MotionProps>,
     MotionProps {
   variant?: ButtonVariant;
   size?: keyof typeof buttonSizes;

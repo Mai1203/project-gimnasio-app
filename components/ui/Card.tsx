@@ -5,8 +5,7 @@ import { cn } from '@/lib/utils';
 import { HTMLAttributes, forwardRef } from 'react';
 
 interface CardProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, keyof MotionProps>,
-    MotionProps {
+  extends Omit<HTMLAttributes<HTMLDivElement>, keyof MotionProps>, MotionProps {
   hover?: boolean;
   glass?: boolean;
 }
@@ -45,7 +44,10 @@ export const CardHeader = forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col space-y-1.5 pb-4 border-b border-border', className)}
+    className={cn(
+      'flex flex-col space-y-1.5 border-b border-border pb-4',
+      className
+    )}
     {...props}
   />
 ));
@@ -77,7 +79,7 @@ export const CardFooter = forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex items-center pt-4 border-t border-border', className)}
+    className={cn('flex items-center border-t border-border pt-4', className)}
     {...props}
   />
 ));

@@ -11,8 +11,16 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { UserPlus, Mail, Lock, User, Phone, ArrowLeft, CheckCircle } from 'lucide-react';
-import { signIn } from "next-auth/react";
+import {
+  UserPlus,
+  Mail,
+  Lock,
+  User,
+  Phone,
+  ArrowLeft,
+  CheckCircle,
+} from 'lucide-react';
+import { signIn } from 'next-auth/react';
 
 import { useApp } from '@/context/AppContext';
 import { AnimatedButton } from '@/components/ui/animated-button';
@@ -20,29 +28,34 @@ import { AnimatedInput } from '@/components/ui/animated-input';
 import { AnimatedCard } from '@/components/ui/animated-card';
 
 // Schema de validación con Zod
-const registerSchema = z.object({
-  name: z.string()
-    .min(1, 'El nombre es requerido')
-    .min(2, 'El nombre debe tener al menos 2 caracteres'),
-  email: z.string()
-    .min(1, 'El email es requerido')
-    .email('Email inválido'),
-  phone: z.string()
-    .min(1, 'El teléfono es requerido')
-    .min(10, 'El teléfono debe tener al menos 10 dígitos'),
-  password: z.string()
-    .min(1, 'La contraseña es requerida')
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'La contraseña debe contener al menos una mayúscula, una minúscula y un número'),
-  confirmPassword: z.string()
-    .min(1, 'Confirma tu contraseña'),
-  terms: z.boolean().refine(val => val === true, {
-    message: 'Debes aceptar los términos y condiciones'
+const registerSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, 'El nombre es requerido')
+      .min(2, 'El nombre debe tener al menos 2 caracteres'),
+    email: z.string().min(1, 'El email es requerido').email('Email inválido'),
+    phone: z
+      .string()
+      .min(1, 'El teléfono es requerido')
+      .min(10, 'El teléfono debe tener al menos 10 dígitos'),
+    password: z
+      .string()
+      .min(1, 'La contraseña es requerida')
+      .min(8, 'La contraseña debe tener al menos 8 caracteres')
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        'La contraseña debe contener al menos una mayúscula, una minúscula y un número'
+      ),
+    confirmPassword: z.string().min(1, 'Confirma tu contraseña'),
+    terms: z.boolean().refine(val => val === true, {
+      message: 'Debes aceptar los términos y condiciones',
+    }),
   })
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Las contraseñas no coinciden',
-  path: ['confirmPassword']
-});
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Las contraseñas no coinciden',
+    path: ['confirmPassword'],
+  });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -56,9 +69,9 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors },
-    watch
+    watch,
   } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema)
+    resolver: zodResolver(registerSchema),
   });
 
   const password = watch('password', '');
@@ -71,9 +84,11 @@ export default function RegisterPage() {
     if (/[A-Z]/.test(password)) score++;
     if (/\d/.test(password)) score++;
     if (/[^a-zA-Z\d]/.test(password)) score++;
-    
-    if (score < 2) return { strength: 'Débil', color: 'bg-red-500', width: '20%' };
-    if (score < 4) return { strength: 'Media', color: 'bg-yellow-500', width: '60%' };
+
+    if (score < 2)
+      return { strength: 'Débil', color: 'bg-red-500', width: '20%' };
+    if (score < 4)
+      return { strength: 'Media', color: 'bg-yellow-500', width: '60%' };
     return { strength: 'Fuerte', color: 'bg-green-500', width: '100%' };
   };
 
@@ -81,57 +96,56 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
-    setRegisterError("");
+    setRegisterError('');
 
     try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: data.name,
           email: data.email,
           phone: data.phone,
-          password: data.password
-        })
+          password: data.password,
+        }),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        setRegisterError(result.error || "Error al crear la cuenta");
+        setRegisterError(result.error || 'Error al crear la cuenta');
         setIsLoading(false);
         return;
       }
 
       // Login automático después de registrarse
-      const loginRes = await signIn("credentials", {
+      const loginRes = await signIn('credentials', {
         redirect: true,
         email: data.email,
         password: data.password,
-        callbackUrl: "/dashboard"
+        callbackUrl: '/dashboard',
       });
 
       if (loginRes?.error) {
-        setRegisterError("Cuenta creada pero error al iniciar sesión");
+        setRegisterError('Cuenta creada pero error al iniciar sesión');
       } else {
-        router.push("/dashboard");
+        router.push('/dashboard');
       }
     } catch (error) {
-      setRegisterError("Error al registrarse. Intenta de nuevo.");
+      setRegisterError('Error al registrarse. Intenta de nuevo.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       {/* Background decorativo */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-background">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
       </div>
 
-      <div className="relative max-w-md w-full space-y-8">
-        
+      <div className="relative w-full max-w-md space-y-8">
         {/* Header */}
         <motion.div
           className="text-center"
@@ -142,39 +156,36 @@ export default function RegisterPage() {
           {/* Botón de regreso */}
           <Link
             href="/"
-            className="inline-flex items-center space-x-2 text-gray-400 hover:text-white mb-8 transition-colors duration-200"
+            className="mb-8 inline-flex items-center space-x-2 text-muted-foreground transition-colors duration-200 hover:text-foreground"
           >
             <ArrowLeft size={20} />
             <span>Volver al inicio</span>
           </Link>
 
           {/* Logo y título */}
-          <div className="flex justify-center mb-6">
-            <div className="p-4 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl shadow-2xl">
-              <UserPlus className="w-8 h-8 text-white" />
+          <div className="mb-6 flex justify-center">
+            <div className="rounded-2xl bg-primary p-4 shadow-2xl">
+              <UserPlus className="h-8 w-8 text-primary-foreground" />
             </div>
           </div>
-          
-          <h2 className="text-3xl font-bold text-white mb-2">
-            Crear Cuenta
-          </h2>
-          <p className="text-gray-400">
-            Únete a la comunidad PowerGym
-          </p>
+
+          <h2 className="mb-2 text-3xl font-bold text-foreground">Crear Cuenta</h2>
+          <p className="text-muted-foreground">Únete a la comunidad Esthetic Gym</p>
         </motion.div>
 
         {/* Formulario de registro */}
         <AnimatedCard variant="glass">
-          <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6">
-            
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-8">
             {/* Error general */}
             {registerError && (
               <motion.div
-                className="bg-red-500/10 border border-red-500/20 rounded-lg p-4"
+                className="rounded-lg border border-destructive/20 bg-destructive/10 p-4"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <p className="text-red-400 text-sm text-center">{registerError}</p>
+                <p className="text-center text-sm text-destructive">
+                  {registerError}
+                </p>
               </motion.div>
             )}
 
@@ -224,7 +235,7 @@ export default function RegisterPage() {
                 error={errors.password?.message}
                 placeholder="Tu contraseña"
               />
-              
+
               {/* Indicador de fuerza de contraseña */}
               {password && passwordStrength && (
                 <motion.div
@@ -234,13 +245,15 @@ export default function RegisterPage() {
                   transition={{ duration: 0.2 }}
                 >
                   <div className="flex items-center space-x-2">
-                    <div className="flex-1 bg-slate-700 rounded-full h-1">
+                    <div className="h-1 flex-1 rounded-full bg-border">
                       <div
                         className={`h-1 rounded-full transition-all duration-300 ${passwordStrength.color}`}
                         style={{ width: passwordStrength.width }}
                       />
                     </div>
-                    <span className="text-xs text-gray-400">{passwordStrength.strength}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {passwordStrength.strength}
+                    </span>
                   </div>
                 </motion.div>
               )}
@@ -263,22 +276,28 @@ export default function RegisterPage() {
               <input
                 {...register('terms')}
                 type="checkbox"
-                className="mt-1 rounded border-slate-600 bg-slate-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-slate-900"
+                className="mt-1 rounded border-border bg-background text-primary focus:ring-primary h-4 w-4"
               />
-              <label className="text-sm text-gray-300">
+              <label className="text-sm text-foreground">
                 Acepto los{' '}
-                <Link href="/terms" className="text-amber-400 hover:text-amber-300">
+                <Link
+                  href="/terms"
+                  className="text-primary hover:text-primary/80 font-medium"
+                >
                   términos y condiciones
                 </Link>{' '}
                 y la{' '}
-                <Link href="/privacy" className="text-amber-400 hover:text-amber-300">
+                <Link
+                  href="/privacy"
+                  className="text-primary hover:text-primary/80 font-medium"
+                >
                   política de privacidad
                 </Link>
               </label>
             </div>
-            
+
             {errors.terms && (
-              <p className="text-red-400 text-sm">{errors.terms.message}</p>
+              <p className="text-sm text-red-400">{errors.terms.message}</p>
             )}
 
             {/* Botón de envío */}
@@ -295,20 +314,18 @@ export default function RegisterPage() {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-700"></div>
+                <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-slate-900/90 text-gray-400">¿Ya tienes cuenta?</span>
+                <span className="bg-background px-2 text-muted-foreground">
+                  ¿Ya tienes cuenta?
+                </span>
               </div>
             </div>
 
             {/* Link a login */}
             <Link href="/auth/login">
-              <AnimatedButton
-                variant="outline"
-                size="lg"
-                className="w-full"
-              >
+              <AnimatedButton variant="outline" size="lg" className="w-full">
                 Iniciar sesión
               </AnimatedButton>
             </Link>
@@ -317,12 +334,13 @@ export default function RegisterPage() {
 
         {/* Footer */}
         <motion.p
-          className="text-center text-sm text-gray-400"
+          className="text-center text-sm text-muted-foreground"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          Al crear una cuenta, aceptas nuestros términos de servicio y política de privacidad.
+          Al crear una cuenta, aceptas nuestros términos de servicio y política
+          de privacidad.
         </motion.p>
       </div>
     </div>

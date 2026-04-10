@@ -26,13 +26,13 @@ const sizeClasses = {
  * Modal component with smooth animations
  * Uses Framer Motion for enter/exit animations
  */
-export function Modal({ 
-  isOpen, 
-  onClose, 
-  title, 
-  children, 
+export function Modal({
+  isOpen,
+  onClose,
+  title,
+  children,
   size = 'md',
-  closeOnOverlayClick = true 
+  closeOnOverlayClick = true,
 }: ModalProps) {
   // Handle escape key press
   useEffect(() => {
@@ -63,7 +63,7 @@ export function Modal({
             className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
             onClick={closeOnOverlayClick ? onClose : undefined}
           />
-          
+
           {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -71,14 +71,14 @@ export function Modal({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className={cn(
-              'relative w-full bg-surface border border-border rounded-lg shadow-xl',
+              'relative w-full rounded-lg border border-border bg-surface shadow-xl',
               sizeClasses[size]
             )}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             {/* Header */}
             {title && (
-              <div className="flex items-center justify-between p-6 border-b border-border">
+              <div className="flex items-center justify-between border-b border-border p-6">
                 <h2 className="text-xl font-semibold text-text-primary">
                   {title}
                 </h2>
@@ -92,11 +92,9 @@ export function Modal({
                 </Button>
               </div>
             )}
-            
+
             {/* Content */}
-            <div className={cn('p-6', title && 'pt-0')}>
-              {children}
-            </div>
+            <div className={cn('p-6', title && 'pt-0')}>{children}</div>
           </motion.div>
         </div>
       )}
@@ -105,15 +103,20 @@ export function Modal({
 }
 
 // Modal subcomponents for better composition
-export function ModalFooter({ 
-  children, 
-  className 
-}: { 
+export function ModalFooter({
+  children,
+  className,
+}: {
   children: React.ReactNode;
   className?: string;
 }) {
   return (
-    <div className={cn('flex justify-end space-x-3 pt-6 border-t border-border', className)}>
+    <div
+      className={cn(
+        'flex justify-end space-x-3 border-t border-border pt-6',
+        className
+      )}
+    >
       {children}
     </div>
   );

@@ -16,15 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es">
       <body className={inter.className}>
         <AppProvider>
-          <SessionProvider> 
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+          <SessionProvider>
+            <div className="min-h-screen bg-background text-foreground flex flex-col">
               <Navbar />
-              <main className="pt-16">  
-                {children}               
-              </main>
+              <main className="flex-1 w-full">{children}</main>
               <Footer />
             </div>
           </SessionProvider>

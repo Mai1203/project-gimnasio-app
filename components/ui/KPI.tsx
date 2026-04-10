@@ -1,7 +1,6 @@
 'use client';
 
-
-import * as React from 'react'; 
+import * as React from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import { Card } from './Card';
 import { cn } from '@/lib/utils';
@@ -31,20 +30,21 @@ export function KPI({
   animate = true,
   className,
 }: KPIProps) {
-  const numericValue = typeof value === 'number' ? value : parseFloat(value.toString());
+  const numericValue =
+    typeof value === 'number' ? value : parseFloat(value.toString());
   const isNumeric = !isNaN(numericValue);
 
   return (
     <Card hover className={cn('relative overflow-hidden', className)}>
       {/* Background icon */}
-      <div className="absolute top-4 right-4 opacity-10">
+      <div className="absolute right-4 top-4 opacity-10">
         <Icon className="h-12 w-12" />
       </div>
 
       <div className="relative">
         {/* Main icon */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="p-2 bg-primary bg-opacity-20 rounded-lg">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="rounded-lg bg-primary bg-opacity-20 p-2">
             <Icon className="h-6 w-6 text-primary" />
           </div>
           {trend && (
@@ -63,7 +63,7 @@ export function KPI({
         </div>
 
         {/* Title */}
-        <p className="text-text-secondary text-sm font-medium mb-2">{title}</p>
+        <p className="mb-2 text-sm font-medium text-text-secondary">{title}</p>
 
         {/* Value */}
         <div className="text-2xl font-bold text-text-primary">
@@ -90,7 +90,7 @@ function AnimatedCounter({
   duration?: number;
 }) {
   const motionValue = useMotionValue(from);
-  const rounded = useTransform(motionValue, (latest) => Math.floor(latest));
+  const rounded = useTransform(motionValue, latest => Math.floor(latest));
 
   React.useEffect(() => {
     const controls = animate(motionValue, to, {

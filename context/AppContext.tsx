@@ -14,21 +14,21 @@ interface AppContextType {
   login: (email: string, password: string) => Promise<boolean>;
   register: (userData: any) => Promise<boolean>;
   logout: () => void;
-  
+
   // Gestión de usuarios
   users: User[];
   addUser: (user: Omit<User, 'id' | 'joinDate'>) => void;
   updateUser: (id: string, user: Partial<User>) => void;
   deleteUser: (id: string) => void;
   getUserById: (id: string) => User | undefined;
-  
+
   // Gestión de planes
   plans: Plan[];
   addPlan: (plan: Omit<Plan, 'id'>) => void;
   updatePlan: (id: string, plan: Partial<Plan>) => void;
   deletePlan: (id: string) => void;
   getPlanById: (id: string) => Plan | undefined;
-  
+
   // Dashboard stats
   dashboardStats: DashboardStats;
   updateDashboardStats: () => void;
@@ -36,11 +36,14 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [plans, setPlans] = useState<Plan[]>(mockPlans);
-  const [dashboardStats, setDashboardStats] = useState<DashboardStats>(mockDashboardStats);
+  const [dashboardStats, setDashboardStats] =
+    useState<DashboardStats>(mockDashboardStats);
 
   // Funciones de autenticación
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -50,7 +53,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         id: '1',
         email: email,
         name: 'Administrador',
-        role: 'admin'
+        role: 'admin',
       });
       return true;
     }
@@ -63,7 +66,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       id: Date.now().toString(),
       email: userData.email,
       name: userData.name,
-      role: 'user'
+      role: 'user',
     };
     setUser(newUser);
     return true;
@@ -78,16 +81,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const newUser: User = {
       ...userData,
       id: Date.now().toString(),
-      joinDate: new Date().toISOString().split('T')[0]
+      joinDate: new Date().toISOString().split('T')[0],
     };
     setUsers(prev => [...prev, newUser]);
     updateDashboardStats();
   };
 
   const updateUser = (id: string, userData: Partial<User>) => {
-    setUsers(prev => prev.map(user => 
-      user.id === id ? { ...user, ...userData } : user
-    ));
+    setUsers(prev =>
+      prev.map(user => (user.id === id ? { ...user, ...userData } : user))
+    );
     updateDashboardStats();
   };
 
@@ -104,15 +107,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const addPlan = (planData: Omit<Plan, 'id'>) => {
     const newPlan: Plan = {
       ...planData,
-      id: Date.now().toString()
+      id: Date.now().toString(),
     };
     setPlans(prev => [...prev, newPlan]);
   };
 
   const updatePlan = (id: string, planData: Partial<Plan>) => {
-    setPlans(prev => prev.map(plan => 
-      plan.id === id ? { ...plan, ...planData } : plan
-    ));
+    setPlans(prev =>
+      prev.map(plan => (plan.id === id ? { ...plan, ...planData } : plan))
+    );
   };
 
   const deletePlan = (id: string) => {
@@ -128,14 +131,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const activeUsers = users.filter(user => user.status === 'active');
     const today = new Date().toISOString().split('T')[0];
     const newToday = users.filter(user => user.joinDate === today);
-    
+
     setDashboardStats({
       activeMembers: activeUsers.length,
       newMembersToday: newToday.length,
       dailyRevenue: Math.floor(Math.random() * 20000) + 5000, // Simulación
       dailyVisitors: Math.floor(Math.random() * 200) + 100, // Simulación
       totalRevenue: dashboardStats.totalRevenue + 1500, // Simulación
-      popularPlan: 'Premium'
+      popularPlan: 'Premium',
     });
   };
 
@@ -155,14 +158,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     deletePlan,
     getPlanById,
     dashboardStats,
-    updateDashboardStats
+    updateDashboardStats,
   };
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export const useApp = () => {

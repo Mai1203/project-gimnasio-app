@@ -35,7 +35,11 @@ export default function PlansPage() {
           priceCents: 2999,
           durationDays: 30,
           description: 'Acceso básico al gimnasio durante 30 días',
-          features: ['Acceso al área de pesas', 'Acceso al área de cardio', 'Casillero incluido'],
+          features: [
+            'Acceso al área de pesas',
+            'Acceso al área de cardio',
+            'Casillero incluido',
+          ],
           activeSubscriptions: 45,
           active: true,
         },
@@ -88,11 +92,11 @@ export default function PlansPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="mx-auto mt-10 h-screen max-w-7xl space-y-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="card animate-pulse">
-              <div className="h-60 bg-surface-hover rounded"></div>
+              <div className="h-60 rounded bg-surface-hover"></div>
             </div>
           ))}
         </div>
@@ -101,7 +105,7 @@ export default function PlansPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
+    <div className="mx-auto mt-10 h-screen max-w-7xl space-y-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -110,18 +114,18 @@ export default function PlansPage() {
       >
         <div>
           <h1 className="text-3xl font-bold text-text-primary">Planes</h1>
-          <p className="text-text-secondary mt-2">
+          <p className="mt-2 text-text-secondary">
             Gestiona los planes de membresía del gimnasio
           </p>
         </div>
         <Button size="lg">
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="mr-2 h-4 w-4" />
           Nuevo Plan
         </Button>
       </motion.div>
 
       {/* Plans Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {plans.map((plan, index) => (
           <motion.div
             key={plan.id}
@@ -129,10 +133,13 @@ export default function PlansPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Card hover className={`border-2 ${getPlanColor(index)} relative overflow-hidden`}>
+            <Card
+              hover
+              className={`border-2 ${getPlanColor(index)} relative overflow-hidden`}
+            >
               {/* Popular badge for middle plan */}
               {index === 1 && (
-                <div className="absolute top-4 right-4 bg-secondary text-white text-xs px-2 py-1 rounded-full">
+                <div className="absolute right-4 top-4 rounded-full bg-secondary px-2 py-1 text-xs text-white">
                   Popular
                 </div>
               )}
@@ -152,7 +159,7 @@ export default function PlansPage() {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <p className="text-text-secondary text-sm">
+                <p className="text-sm text-text-secondary">
                   {plan.description}
                 </p>
 
@@ -163,16 +170,16 @@ export default function PlansPage() {
                       key={featureIndex}
                       className="flex items-center text-sm text-text-primary"
                     >
-                      <div className="w-1.5 h-1.5 bg-primary rounded-full mr-3 flex-shrink-0" />
+                      <div className="mr-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
                       {feature}
                     </li>
                   ))}
                 </ul>
 
                 {/* Subscribers */}
-                <div className="flex items-center justify-between pt-4 border-t border-border">
+                <div className="flex items-center justify-between border-t border-border pt-4">
                   <div className="flex items-center text-sm text-text-muted">
-                    <Users className="h-4 w-4 mr-2" />
+                    <Users className="mr-2 h-4 w-4" />
                     {plan.activeSubscriptions} suscriptores
                   </div>
                   <div className="flex space-x-2">
@@ -201,26 +208,41 @@ export default function PlansPage() {
             <CardTitle>Estadísticas de Planes</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">
-                  {plans.reduce((sum, plan) => sum + plan.activeSubscriptions, 0)}
+                  {plans.reduce(
+                    (sum, plan) => sum + plan.activeSubscriptions,
+                    0
+                  )}
                 </div>
                 <p className="text-text-muted">Total Suscriptores</p>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-success">
-                  ${plans.reduce((sum, plan) => sum + (plan.priceCents * plan.activeSubscriptions), 0) / 100}
+                  $
+                  {plans.reduce(
+                    (sum, plan) =>
+                      sum + plan.priceCents * plan.activeSubscriptions,
+                    0
+                  ) / 100}
                 </div>
                 <p className="text-text-muted">Ingresos Mensuales</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-info">{plans.length}</div>
+                <div className="text-2xl font-bold text-info">
+                  {plans.length}
+                </div>
                 <p className="text-text-muted">Planes Activos</p>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-warning">
-                  ${(plans.reduce((sum, plan) => sum + plan.priceCents, 0) / plans.length / 100).toFixed(2)}
+                  $
+                  {(
+                    plans.reduce((sum, plan) => sum + plan.priceCents, 0) /
+                    plans.length /
+                    100
+                  ).toFixed(2)}
                 </div>
                 <p className="text-text-muted">Precio Promedio</p>
               </div>

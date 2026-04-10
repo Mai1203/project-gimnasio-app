@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button';
 describe('Button Component', () => {
   it('renders correctly with default props', () => {
     render(<Button>Test Button</Button>);
-    
+
     const button = screen.getByRole('button', { name: /test button/i });
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('btn-primary');
@@ -24,16 +24,16 @@ describe('Button Component', () => {
   it('handles click events', () => {
     const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Click me</Button>);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
-    
+
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it('shows loading state', () => {
     render(<Button loading>Loading Button</Button>);
-    
+
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
     expect(button).toHaveClass('opacity-50', 'cursor-not-allowed');
@@ -41,7 +41,7 @@ describe('Button Component', () => {
 
   it('can be disabled', () => {
     render(<Button disabled>Disabled Button</Button>);
-    
+
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
     expect(button).toHaveClass('opacity-50', 'cursor-not-allowed');

@@ -6,13 +6,13 @@ import { Search, Plus, Edit, Trash2, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/Table';
 import { Modal } from '@/components/ui/Modal';
 
@@ -48,7 +48,7 @@ export default function UsersPage() {
           plan: { name: 'Plan Premium' },
           active: true,
           membershipEndDate: '2024-02-15',
-          createdAt: '2024-01-15'
+          createdAt: '2024-01-15',
         },
         {
           id: '2',
@@ -57,7 +57,7 @@ export default function UsersPage() {
           plan: { name: 'Plan Básico' },
           active: true,
           membershipEndDate: '2024-02-20',
-          createdAt: '2024-01-10'
+          createdAt: '2024-01-10',
         },
         {
           id: '3',
@@ -66,7 +66,7 @@ export default function UsersPage() {
           plan: { name: 'Plan VIP' },
           active: false,
           membershipEndDate: null,
-          createdAt: '2024-01-05'
+          createdAt: '2024-01-05',
         },
       ];
       setUsers(mockUsers);
@@ -76,9 +76,10 @@ export default function UsersPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(
+    user =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleViewUser = (user: User) => {
@@ -93,29 +94,33 @@ export default function UsersPage() {
 
   const getMembershipStatus = (user: User) => {
     if (!user.active) return { label: 'Inactivo', color: 'text-error' };
-    if (!user.membershipEndDate) return { label: 'Sin plan', color: 'text-text-muted' };
-    
+    if (!user.membershipEndDate)
+      return { label: 'Sin plan', color: 'text-text-muted' };
+
     const endDate = new Date(user.membershipEndDate);
     const now = new Date();
-    const daysLeft = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    
+    const daysLeft = Math.ceil(
+      (endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
     if (daysLeft <= 0) return { label: 'Vencida', color: 'text-error' };
-    if (daysLeft <= 7) return { label: `${daysLeft} días`, color: 'text-warning' };
+    if (daysLeft <= 7)
+      return { label: `${daysLeft} días`, color: 'text-warning' };
     return { label: 'Activa', color: 'text-success' };
   };
 
   if (loading) {
     return (
-      <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
+      <div className="mx-auto mt-10 h-screen max-w-7xl space-y-6">
         <div className="card animate-pulse">
-          <div className="h-40 bg-surface-hover rounded"></div>
+          <div className="h-40 rounded bg-surface-hover"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto h-screen mt-10">
+    <div className="mx-auto mt-10 h-screen max-w-7xl space-y-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -124,7 +129,7 @@ export default function UsersPage() {
       >
         <h1 className="text-3xl font-bold text-text-primary">Usuarios</h1>
         <Button size="lg">
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="mr-2 h-4 w-4" />
           Nuevo Usuario
         </Button>
       </motion.div>
@@ -138,11 +143,11 @@ export default function UsersPage() {
         <Card>
           <div className="flex items-center space-x-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-muted" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-text-muted" />
               <Input
                 placeholder="Buscar por nombre o email..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
             </div>
@@ -172,7 +177,7 @@ export default function UsersPage() {
             <TableBody>
               {filteredUsers.map((user, index) => {
                 const status = getMembershipStatus(user);
-                
+
                 return (
                   <motion.tr
                     key={user.id}
@@ -183,12 +188,14 @@ export default function UsersPage() {
                   >
                     <TableCell>
                       <div>
-                        <p className="font-medium text-text-primary">{user.name}</p>
+                        <p className="font-medium text-text-primary">
+                          {user.name}
+                        </p>
                         <p className="text-sm text-text-muted">{user.email}</p>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="inline-block px-2 py-1 bg-surface-hover rounded text-sm">
+                      <span className="inline-block rounded bg-surface-hover px-2 py-1 text-sm">
                         {user.plan?.name || 'Sin plan'}
                       </span>
                     </TableCell>
@@ -235,31 +242,41 @@ export default function UsersPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-text-secondary">Nombre</label>
+                <label className="text-sm font-medium text-text-secondary">
+                  Nombre
+                </label>
                 <p className="text-text-primary">{selectedUser.name}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-text-secondary">Email</label>
+                <label className="text-sm font-medium text-text-secondary">
+                  Email
+                </label>
                 <p className="text-text-primary">{selectedUser.email}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-text-secondary">Plan</label>
-                <p className="text-text-primary">{selectedUser.plan?.name || 'Sin plan'}</p>
+                <label className="text-sm font-medium text-text-secondary">
+                  Plan
+                </label>
+                <p className="text-text-primary">
+                  {selectedUser.plan?.name || 'Sin plan'}
+                </p>
               </div>
               <div>
-                <label className="text-sm font-medium text-text-secondary">Estado</label>
+                <label className="text-sm font-medium text-text-secondary">
+                  Estado
+                </label>
                 <p className={getMembershipStatus(selectedUser).color}>
                   {getMembershipStatus(selectedUser).label}
                 </p>
               </div>
             </div>
-            
-            <div className="flex justify-end space-x-3 pt-4 border-t border-border">
+
+            <div className="flex justify-end space-x-3 border-t border-border pt-4">
               <Button variant="ghost" onClick={() => setShowModal(false)}>
                 Cerrar
               </Button>
               <Button>
-                <Edit className="h-4 w-4 mr-2" />
+                <Edit className="mr-2 h-4 w-4" />
                 Editar
               </Button>
             </div>

@@ -10,16 +10,13 @@ import { Input } from '../ui/Input';
  */
 export function Topbar() {
   return (
-    <header className="bg-surface border-b border-border px-6 py-4">
+    <header className="border-b border-border bg-surface px-6 py-4">
       <div className="flex items-center justify-between">
         {/* Search */}
-        <div className="flex-1 max-w-md">
+        <div className="max-w-md flex-1">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-text-muted" />
-            <Input
-              placeholder="Buscar usuarios, planes..."
-              className="pl-10"
-            />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-text-muted" />
+            <Input placeholder="Buscar usuarios, planes..." className="pl-10" />
           </div>
         </div>
 

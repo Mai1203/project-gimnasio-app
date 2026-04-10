@@ -21,13 +21,12 @@ export interface UpdateUserData extends Partial<CreateUserData> {
  * Provides CRUD operations and business logic for users
  */
 export class UsersService {
-  
   /**
    * Get all users with pagination
    */
   static async getUsers(page: number = 1, limit: number = 10) {
     const skip = (page - 1) * limit;
-    
+
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         skip,
@@ -81,13 +80,13 @@ export class UsersService {
    */
   static async createUser(data: CreateUserData): Promise<User> {
     const { planId, ...restData } = data;
-    
+
     return prisma.user.create({
       data: {
         ...restData,
         ...(planId && { plan: { connect: { id: planId } } }), // Conexión correcta
         membershipStartDate: planId ? new Date() : null,
-        membershipEndDate: planId 
+        membershipEndDate: planId
           ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 días
           : null,
       },
@@ -102,7 +101,7 @@ export class UsersService {
    */
   static async updateUser(data: UpdateUserData): Promise<User> {
     const { id, ...updateData } = data;
-    
+
     return prisma.user.update({
       where: { id },
       data: updateData,
@@ -126,29 +125,25 @@ export class UsersService {
    * Get user statistics
    */
   static async getUserStats() {
-    const [
-      totalUsers,
-      activeUsers,
-      newUsersThisMonth,
-      usersWithActivePlans,
-    ] = await Promise.all([
-      prisma.user.count(),
-      prisma.user.count({ where: { active: true } }),
-      prisma.user.count({
-        where: {
-          createdAt: {
-            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    const [totalUsers, activeUsers, newUsersThisMonth, usersWithActivePlans] =
+      await Promise.all([
+        prisma.user.count(),
+        prisma.user.count({ where: { active: true } }),
+        prisma.user.count({
+          where: {
+            createdAt: {
+              gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            },
           },
-        },
-      }),
-      prisma.user.count({
-        where: {
-          planId: { not: null },
-          membershipEndDate: { gt: new Date() },
-          active: true,
-        },
-      }),
-    ]);
+        }),
+        prisma.user.count({
+          where: {
+            planId: { not: null },
+            membershipEndDate: { gt: new Date() },
+            active: true,
+          },
+        }),
+      ]);
 
     return {
       total: totalUsers,

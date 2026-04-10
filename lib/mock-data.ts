@@ -13,10 +13,11 @@ export const mockUsers: User[] = [
     joinDate: '2024-01-15',
     membershipPlan: 'Premium',
     status: 'active',
-    avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+    avatar:
+      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
     address: 'Calle Reforma 123, CDMX',
     emergencyContact: '+52 987 654 3210',
-    birthDate: '1985-06-20'
+    birthDate: '1985-06-20',
   },
   {
     id: '2',
@@ -26,10 +27,11 @@ export const mockUsers: User[] = [
     joinDate: '2024-02-10',
     membershipPlan: 'Básico',
     status: 'active',
-    avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+    avatar:
+      'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
     address: 'Av. Insurgentes 456, CDMX',
     emergencyContact: '+52 876 543 2109',
-    birthDate: '1990-03-15'
+    birthDate: '1990-03-15',
   },
   {
     id: '3',
@@ -39,10 +41,11 @@ export const mockUsers: User[] = [
     joinDate: '2023-12-05',
     membershipPlan: 'VIP',
     status: 'inactive',
-    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+    avatar:
+      'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
     address: 'Colonia Roma 789, CDMX',
     emergencyContact: '+52 765 432 1098',
-    birthDate: '1992-11-08'
+    birthDate: '1992-11-08',
   },
   {
     id: '4',
@@ -52,11 +55,12 @@ export const mockUsers: User[] = [
     joinDate: '2024-03-01',
     membershipPlan: 'Premium',
     status: 'active',
-    avatar: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+    avatar:
+      'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
     address: 'Zona Rosa 321, CDMX',
     emergencyContact: '+52 654 321 0987',
-    birthDate: '1988-07-25'
-  }
+    birthDate: '1988-07-25',
+  },
 ];
 
 export const mockPlans: Plan[] = [
@@ -70,10 +74,10 @@ export const mockPlans: Plan[] = [
       'Acceso al área de pesas',
       'Casilleros incluidos',
       'Horario de 6am a 10pm',
-      'Apoyo básico de entrenadores'
+      'Apoyo básico de entrenadores',
     ],
     color: 'from-slate-600 to-slate-800',
-    popular: false
+    popular: false,
   },
   {
     id: '2',
@@ -87,10 +91,10 @@ export const mockPlans: Plan[] = [
       'Zona de cardio premium',
       'Entrenamiento personalizado (2 sesiones)',
       'Acceso 24/7',
-      'Área de spa y vapor'
+      'Área de spa y vapor',
     ],
     color: 'from-amber-500 to-orange-600',
-    popular: true
+    popular: true,
   },
   {
     id: '3',
@@ -105,11 +109,11 @@ export const mockPlans: Plan[] = [
       'Nutricionista incluido',
       'Tratamientos de spa ilimitados',
       'Estacionamiento preferencial',
-      'Invitados sin costo (2 por mes)'
+      'Invitados sin costo (2 por mes)',
     ],
     color: 'from-purple-600 to-indigo-700',
-    popular: false
-  }
+    popular: false,
+  },
 ];
 
 export const mockDashboardStats: DashboardStats = {
@@ -118,5 +122,5 @@ export const mockDashboardStats: DashboardStats = {
   totalRevenue: 342500,
   activeMembers: 1247,
   newMembersToday: 8,
-  popularPlan: 'Premium'
+  popularPlan: 'Premium',
 };

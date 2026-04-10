@@ -21,11 +21,7 @@ export const TableHeader = forwardRef<
   HTMLTableSectionElement,
   HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead
-    ref={ref}
-    className={cn('bg-surface-hover', className)}
-    {...props}
-  />
+  <thead ref={ref} className={cn('bg-surface-hover', className)} {...props} />
 ));
 TableHeader.displayName = 'TableHeader';
 
@@ -55,7 +51,7 @@ export const TableHead = forwardRef<
   <th
     ref={ref}
     className={cn(
-      'px-4 py-3 text-left text-sm font-medium text-text-secondary uppercase tracking-wider',
+      'px-4 py-3 text-left text-sm font-medium uppercase tracking-wider text-text-secondary',
       className
     )}
     {...props}
@@ -79,7 +75,7 @@ TableCell.displayName = 'TableCell';
 /**
  * Complete Table component with proper styling
  * Usage example:
- * 
+ *
  * <Table>
  *   <TableHeader>
  *     <TableRow>

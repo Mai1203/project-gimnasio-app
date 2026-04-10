@@ -26,29 +26,33 @@
 
 ## 📋 Requisitos Previos
 
-- Node.js 18+ 
+- Node.js 18+
 - PostgreSQL 13+
 - npm o yarn
 
 ## ⚡ Instalación Rápida
 
 1. **Clonar el repositorio**
+
 ```bash
 git clone <repository-url>
 cd gym-control
 ```
 
 2. **Instalar dependencias**
+
 ```bash
 npm install
 ```
 
 3. **Configurar variables de entorno**
+
 ```bash
 cp .env.example .env.local
 ```
 
 Edita `.env.local` con tus credenciales:
+
 ```env
 DATABASE_URL="postgresql://username:password@localhost:5432/gymcontrol"
 NEXTAUTH_URL="http://localhost:3000"
@@ -61,6 +65,7 @@ STRIPE_WEBHOOK_SECRET="whsec_..."
 ```
 
 4. **Configurar la base de datos**
+
 ```bash
 # Ejecutar migraciones
 npm run prisma:migrate
@@ -70,6 +75,7 @@ npm run prisma:seed
 ```
 
 5. **Iniciar el servidor de desarrollo**
+
 ```bash
 npm run dev
 ```
@@ -81,7 +87,7 @@ La aplicación estará disponible en `http://localhost:3000`
 ```bash
 # Desarrollo
 npm run dev          # Iniciar servidor de desarrollo
-npm run build        # Construir para producción  
+npm run build        # Construir para producción
 npm run start        # Iniciar servidor de producción
 
 # Base de datos
@@ -100,11 +106,11 @@ npm run test:watch  # Ejecutar tests en modo watch
 
 Después de ejecutar `npm run prisma:seed`, tendrás acceso con:
 
-| Rol | Email | Contraseña |
-|-----|-------|------------|
-| Admin | admin@gymcontrol.com | admin123 |
-| Staff | staff@gymcontrol.com | staff123 |
-| Usuario | user1@gmail.com | user123 |
+| Rol     | Email                | Contraseña |
+| ------- | -------------------- | ---------- |
+| Admin   | admin@gymcontrol.com | admin123   |
+| Staff   | staff@gymcontrol.com | staff123   |
+| Usuario | user1@gmail.com      | user123    |
 
 ## 🏗 Arquitectura del Proyecto
 
@@ -136,14 +142,16 @@ gym-control/
 ## 🎨 Sistema de Diseño
 
 ### Paleta de Colores (Tema Oscuro)
+
 - **Background**: `#0b0f14`
-- **Surface**: `#0f1720` 
+- **Surface**: `#0f1720`
 - **Primary**: `#7c5cff`
 - **Secondary**: `#00b894`
 - **Text Primary**: `#e6eef8`
 - **Text Secondary**: `#98a0b3`
 
 ### Componentes UI
+
 - **Button**: Múltiples variantes (primary, secondary, ghost, danger)
 - **Card**: Con efectos hover y animaciones
 - **Table**: Responsive con paginación
@@ -161,24 +169,28 @@ gym-control/
 ## 📊 Funcionalidades Principales
 
 ### Dashboard
+
 - KPIs en tiempo real (ingresos, check-ins, suscripciones)
 - Gráficos de tendencias
 - Actividad reciente
 - Próximos vencimientos
 
 ### Gestión de Usuarios
+
 - CRUD completo de usuarios
 - Búsqueda y filtros avanzados
 - Historial de pagos y check-ins
 - Estados de membresía
 
-### Planes de Membresía  
+### Planes de Membresía
+
 - Gestión de planes y precios
 - Características personalizables
 - Estadísticas de suscripciones
 - Ingresos por plan
 
 ### Caja Administrativa
+
 - Transacciones diarias
 - Reportes financieros
 - Cierre de caja automático
@@ -198,6 +210,7 @@ npm run test:coverage
 ```
 
 ### Estructura de Tests
+
 - **Componentes**: Tests unitarios para componentes UI
 - **Servicios**: Tests de lógica de negocio
 - **API**: Tests de integración para endpoints
@@ -206,11 +219,13 @@ npm run test:coverage
 ## 🚀 Despliegue
 
 ### Vercel (Recomendado)
+
 1. Conecta tu repositorio a Vercel
 2. Configura las variables de entorno
 3. El despliegue es automático en cada push
 
 ### Docker
+
 ```bash
 # Construir imagen
 docker build -t gym-control .
@@ -220,6 +235,7 @@ docker run -p 3000:3000 gym-control
 ```
 
 ### Variables de Entorno para Producción
+
 ```env
 DATABASE_URL="postgresql://..."
 NEXTAUTH_URL="https://tu-dominio.com"

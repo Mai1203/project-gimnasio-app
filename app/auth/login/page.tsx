@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Mail, Lock, LogIn, ArrowLeft } from 'lucide-react';
-import { signIn} from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 import { useApp } from '@/context/AppContext';
 import { AnimatedButton } from '@/components/ui/animated-button';
@@ -20,12 +20,11 @@ import { AnimatedInput } from '@/components/ui/animated-input';
 import { AnimatedCard } from '@/components/ui/animated-card';
 // Schema de validación con Zod
 const loginSchema = z.object({
-  email: z.string()
-    .min(1, 'El email es requerido')
-    .email('Email inválido'),
-  password: z.string()
+  email: z.string().min(1, 'El email es requerido').email('Email inválido'),
+  password: z
+    .string()
     .min(1, 'La contraseña es requerida')
-    .min(6, 'La contraseña debe tener al menos 6 caracteres')
+    .min(6, 'La contraseña debe tener al menos 6 caracteres'),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -40,39 +39,38 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema)
+    resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     setLoginError('');
 
-    const res = await signIn("credentials", {
+    const res = await signIn('credentials', {
       redirect: false,
       email: data.email,
-      password: data.password
+      password: data.password,
     });
 
     if (res?.error) {
-      setLoginError("Email o contraseña incorrectos");
+      setLoginError('Email o contraseña incorrectos');
     } else {
-      router.push("/dashboard");
+      router.push('/dashboard');
     }
 
     setIsLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       {/* Background decorativo */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-background">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
       </div>
 
-      <div className="relative max-w-md w-full space-y-8">
-        
+      <div className="relative w-full max-w-md space-y-8">
         {/* Header */}
         <motion.div
           className="text-center"
@@ -83,39 +81,34 @@ export default function LoginPage() {
           {/* Botón de regreso */}
           <Link
             href="/"
-            className="inline-flex items-center space-x-2 text-gray-400 hover:text-white mb-8 transition-colors duration-200"
+            className="mb-8 inline-flex items-center space-x-2 text-muted-foreground transition-colors duration-200 hover:text-foreground"
           >
             <ArrowLeft size={20} />
             <span>Volver al inicio</span>
           </Link>
 
           {/* Logo y título */}
-          <div className="flex justify-center mb-6">
-            <div className="p-4 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-2xl">
-              <LogIn className="w-8 h-8 text-white" />
+          <div className="mb-6 flex justify-center">
+            <div className="rounded-2xl bg-primary p-4 shadow-2xl">
+              <LogIn className="h-8 w-8 text-primary-foreground" />
             </div>
           </div>
-          
-          <h2 className="text-3xl font-bold text-white mb-2">
-            Iniciar Sesión
-          </h2>
-          <p className="text-gray-400">
-            Accede a tu cuenta de PowerGym
-          </p>
+
+          <h2 className="mb-2 text-3xl font-bold text-foreground">Iniciar Sesión</h2>
+          <p className="text-muted-foreground">Accede a tu cuenta de Esthetic Gym</p>
         </motion.div>
 
         {/* Formulario de login */}
         <AnimatedCard variant="glass">
-          <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6">
-            
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-8">
             {/* Error general */}
             {loginError && (
               <motion.div
-                className="bg-red-500/10 border border-red-500/20 rounded-lg p-4"
+                className="rounded-lg border border-destructive/20 bg-destructive/10 p-4"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <p className="text-red-400 text-sm text-center">{loginError}</p>
+                <p className="text-center text-sm text-destructive">{loginError}</p>
               </motion.div>
             )}
 
@@ -148,14 +141,14 @@ export default function LoginPage() {
               <label className="flex items-center space-x-2 text-sm">
                 <input
                   type="checkbox"
-                  className="rounded border-slate-600 bg-slate-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-slate-900"
+                  className="rounded border-border bg-background text-primary focus:ring-primary h-4 w-4"
                 />
-                <span className="text-gray-300">Recordarme</span>
+                <span className="text-foreground font-medium">Recordarme</span>
               </label>
-              
+
               <Link
                 href="/auth/forgot-password"
-                className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
+                className="text-sm text-primary font-medium transition-colors hover:text-primary/80"
               >
                 ¿Olvidaste tu contraseña?
               </Link>
@@ -175,20 +168,18 @@ export default function LoginPage() {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-700"></div>
+                <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-slate-900/90 text-gray-400">¿No tienes cuenta?</span>
+                <span className="bg-background px-2 text-muted-foreground">
+                  ¿No tienes cuenta?
+                </span>
               </div>
             </div>
 
             {/* Link a registro */}
             <Link href="/auth/register">
-              <AnimatedButton
-                variant="outline"
-                size="lg"
-                className="w-full"
-              >
+              <AnimatedButton variant="outline" size="lg" className="w-full">
                 Crear cuenta nueva
               </AnimatedButton>
             </Link>
@@ -197,17 +188,17 @@ export default function LoginPage() {
 
         {/* Footer */}
         <motion.p
-          className="text-center text-sm text-gray-400"
+          className="text-center text-sm text-muted-foreground"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
           Al iniciar sesión, aceptas nuestros{' '}
-          <Link href="/terms" className="text-amber-400 hover:text-amber-300">
+          <Link href="/terms" className="text-primary hover:text-primary/80 font-medium">
             Términos de Servicio
           </Link>{' '}
           y{' '}
-          <Link href="/privacy" className="text-amber-400 hover:text-amber-300">
+          <Link href="/privacy" className="text-primary hover:text-primary/80 font-medium">
             Política de Privacidad
           </Link>
         </motion.p>

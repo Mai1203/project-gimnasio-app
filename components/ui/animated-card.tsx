@@ -13,41 +13,56 @@ type AnimatedCardProps = React.ComponentPropsWithRef<typeof motion.div> & {
 };
 
 const AnimatedCard = React.forwardRef<HTMLDivElement, AnimatedCardProps>(
-  ({ className, children, variant = 'default', hover = true, delay = 0, ...props }, ref) => {
-    
+  (
+    {
+      className,
+      children,
+      variant = 'default',
+      hover = true,
+      delay = 0,
+      ...props
+    },
+    ref
+  ) => {
     const variants = {
-      default: 'bg-slate-800/50 border border-slate-700/50',
-      glass: 'bg-white/5 backdrop-blur-lg border border-white/10',
-      gradient: 'bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/30',
-      border: 'bg-transparent border-2 border-slate-700 hover:border-amber-500/50'
+      default: 'bg-card text-card-foreground border border-border shadow-sm',
+      glass: 'bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl',
+      gradient:
+        'bg-gradient-to-br from-white to-secondary/5 border border-border/50',
+      border:
+        'bg-transparent border-2 border-border hover:border-primary/50',
     };
 
     const cardVariants = {
       hidden: { opacity: 0, y: 30, scale: 0.95 },
       visible: {
-        opacity: 1, y: 0, scale: 1,
+        opacity: 1,
+        y: 0,
+        scale: 1,
         transition: {
           duration: 0.5,
           delay: delay,
-          ease: [0.25, 0.4, 0.55, 1.4]
-        }
-      }
+          ease: [0.25, 0.4, 0.55, 1.4],
+        },
+      },
     };
 
-    const hoverVariants = hover ? {
-      scale: 1.02,
-      y: -5,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    } : {};
+    const hoverVariants = hover
+      ? {
+          scale: 1.02,
+          y: -5,
+          transition: {
+            duration: 0.3,
+            ease: 'easeOut',
+          },
+        }
+      : {};
 
     return (
       <motion.div
         ref={ref}
         className={cn(
-          'rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300',
+          'rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-2xl',
           'relative overflow-hidden',
           variants[variant],
           className
@@ -63,7 +78,7 @@ const AnimatedCard = React.forwardRef<HTMLDivElement, AnimatedCardProps>(
         <div className="relative z-10">{children}</div>
         {hover && (
           <motion.div
-            className="absolute inset-0 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-amber-500/10 opacity-0"
+            className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 opacity-0"
             whileHover={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           />

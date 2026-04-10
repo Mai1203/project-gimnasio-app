@@ -6,7 +6,6 @@ import { TransactionType } from '@prisma/client';
  * Manages daily cash flow, transactions, and financial KPIs
  */
 export class CashboxService {
-  
   /**
    * Get today's financial summary
    */
@@ -96,9 +95,20 @@ export class CashboxService {
    * Get monthly financial summary
    */
   static async getMonthlySummary(year?: number, month?: number) {
-    const targetDate = new Date(year || new Date().getFullYear(), month || new Date().getMonth());
-    const startOfMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 1);
-    const startOfNextMonth = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 1);
+    const targetDate = new Date(
+      year || new Date().getFullYear(),
+      month || new Date().getMonth()
+    );
+    const startOfMonth = new Date(
+      targetDate.getFullYear(),
+      targetDate.getMonth(),
+      1
+    );
+    const startOfNextMonth = new Date(
+      targetDate.getFullYear(),
+      targetDate.getMonth() + 1,
+      1
+    );
 
     const [
       monthlyRevenue,
@@ -174,7 +184,10 @@ export class CashboxService {
     return {
       revenue: (monthlyRevenue._sum.amountCents || 0) / 100,
       expenses: Math.abs((monthlyExpenses._sum.amountCents || 0) / 100),
-      netIncome: ((monthlyRevenue._sum.amountCents || 0) + (monthlyExpenses._sum.amountCents || 0)) / 100,
+      netIncome:
+        ((monthlyRevenue._sum.amountCents || 0) +
+          (monthlyExpenses._sum.amountCents || 0)) /
+        100,
       checkIns: monthlyCheckIns,
       newUsers: monthlyNewUsers,
       dailyBreakdown: dailyRevenue,
@@ -206,87 +219,87 @@ export class CashboxService {
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const [
-      transactions,
-      checkIns,
-      newSubscriptions,
-      expiredMemberships,
-    ] = await Promise.all([
-      prisma.transaction.findMany({
-        where: {
-          createdAt: {
-            gte: startOfDay,
-            lte: endOfDay,
-          },
-        },
-        include: {
-          user: {
-            select: {
-              name: true,
-              email: true,
+    const [transactions, checkIns, newSubscriptions, expiredMemberships] =
+      await Promise.all([
+        prisma.transaction.findMany({
+          where: {
+            createdAt: {
+              gte: startOfDay,
+              lte: endOfDay,
             },
           },
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      }),
-
-      prisma.checkIn.findMany({
-        where: {
-          at: {
-            gte: startOfDay,
-            lte: endOfDay,
-          },
-        },
-        include: {
-          user: {
-            select: {
-              name: true,
-              email: true,
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
             },
           },
-        },
-        orderBy: {
-          at: 'desc',
-        },
-      }),
-
-      prisma.user.findMany({
-        where: {
-          membershipStartDate: {
-            gte: startOfDay,
-            lte: endOfDay,
+          orderBy: {
+            createdAt: 'desc',
           },
-          planId: { not: null },
-        },
-        include: {
-          plan: true,
-        },
-      }),
+        }),
 
-      prisma.user.findMany({
-        where: {
-          membershipEndDate: {
-            gte: startOfDay,
-            lte: endOfDay,
+        prisma.checkIn.findMany({
+          where: {
+            at: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
           },
-          active: true,
-        },
-        include: {
-          plan: true,
-        },
-      }),
-    ]);
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
+          },
+          orderBy: {
+            at: 'desc',
+          },
+        }),
+
+        prisma.user.findMany({
+          where: {
+            membershipStartDate: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
+            planId: { not: null },
+          },
+          include: {
+            plan: true,
+          },
+        }),
+
+        prisma.user.findMany({
+          where: {
+            membershipEndDate: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
+            active: true,
+          },
+          include: {
+            plan: true,
+          },
+        }),
+      ]);
 
     // Calculate totals
-    const totalRevenue = transactions
-      .filter(t => t.type === TransactionType.PAYMENT)
-      .reduce((sum, t) => sum + t.amountCents, 0) / 100;
+    const totalRevenue =
+      transactions
+        .filter(t => t.type === TransactionType.PAYMENT)
+        .reduce((sum, t) => sum + t.amountCents, 0) / 100;
 
-    const totalRefunds = Math.abs(transactions
-      .filter(t => t.type === TransactionType.REFUND)
-      .reduce((sum, t) => sum + t.amountCents, 0)) / 100;
+    const totalRefunds =
+      Math.abs(
+        transactions
+          .filter(t => t.type === TransactionType.REFUND)
+          .reduce((sum, t) => sum + t.amountCents, 0)
+      ) / 100;
 
     return {
       date,
@@ -350,10 +363,11 @@ export class CashboxService {
 
     const currentRevenue = (currentPeriod._sum.amountCents || 0) / 100;
     const previousRevenue = (previousPeriod._sum.amountCents || 0) / 100;
-    
-    const percentageChange = previousRevenue > 0 
-      ? ((currentRevenue - previousRevenue) / previousRevenue) * 100
-      : 0;
+
+    const percentageChange =
+      previousRevenue > 0
+        ? ((currentRevenue - previousRevenue) / previousRevenue) * 100
+        : 0;
 
     return {
       current: currentRevenue,

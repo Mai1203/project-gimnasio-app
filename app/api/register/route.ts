@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { hash } from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from 'next/server';
+import { hash } from 'bcryptjs';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(req: Request) {
   try {
@@ -9,11 +9,14 @@ export async function POST(req: Request) {
 
     // Verificar si el usuario ya existe
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (existingUser) {
-      return NextResponse.json({ error: "El email ya está registrado" }, { status: 400 });
+      return NextResponse.json(
+        { error: 'El email ya está registrado' },
+        { status: 400 }
+      );
     }
 
     // Hashear contraseña
@@ -25,13 +28,19 @@ export async function POST(req: Request) {
         name,
         email,
         phone,
-        password: hashedPassword
-      }
+        password: hashedPassword,
+      },
     });
 
-    return NextResponse.json({ message: "Usuario creado", user: newUser }, { status: 201 });
+    return NextResponse.json(
+      { message: 'Usuario creado', user: newUser },
+      { status: 201 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Error al registrar usuario" }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Error al registrar usuario' },
+      { status: 500 }
+    );
   }
 }

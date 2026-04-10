@@ -18,7 +18,6 @@ export interface UpdatePlanData extends Partial<CreatePlanData> {
  * Manages gym membership plans and subscriptions
  */
 export class PlansService {
-  
   /**
    * Get all plans
    */
@@ -78,7 +77,7 @@ export class PlansService {
    */
   static async updatePlan(data: UpdatePlanData): Promise<Plan> {
     const { id, ...updateData } = data;
-    
+
     return prisma.plan.update({
       where: { id },
       data: updateData,

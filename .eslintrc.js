@@ -11,16 +11,16 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    
+
     // React specific rules
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    
+
     // General rules
     'no-console': 'warn',
     'no-debugger': 'error',
     'prefer-const': 'error',
-    
+
     // Import rules
     'import/order': [
       'error',
@@ -31,7 +31,7 @@ module.exports = {
           'internal',
           'parent',
           'sibling',
-          'index'
+          'index',
         ],
         'newlines-between': 'never',
         alphabetize: {
@@ -41,11 +41,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: [
-    'node_modules/',
-    '.next/',
-    'out/',
-    'build/',
-    'dist/',
-  ],
+  ignorePatterns: ['node_modules/', '.next/', 'out/', 'build/', 'dist/'],
 };
