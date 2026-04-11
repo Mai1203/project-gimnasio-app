@@ -19,6 +19,8 @@ import {
   Phone,
   ArrowLeft,
   CheckCircle,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 
@@ -62,6 +64,8 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [registerError, setRegisterError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
 
   const {
@@ -227,20 +231,29 @@ export default function RegisterPage() {
                   <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
                     Protocolo / Contraseña
                   </label>
-                  <input
-                    {...register('password')}
-                    type="password"
-                    className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
-                    placeholder="••••••••"
-                  />
-                  {passwordStrength && (
-                    <div className="mt-4 flex items-center space-x-3">
-                      <div className="h-[2px] w-20 bg-white/10 overflow-hidden">
-                        <div className={cn("h-full transition-all duration-500", passwordStrength.color, passwordStrength.strength === 'DÉBIL' ? 'w-1/3' : passwordStrength.strength === 'MEDIA' ? 'w-2/3' : 'w-full')} />
+                  <div className="relative">
+                    <input
+                      {...register('password')}
+                      type={showPassword ? 'text' : 'password'}
+                      className="w-full bg-transparent border-b border-white/20 py-4 px-2 pr-10 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-primary transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                    {passwordStrength && (
+                      <div className="mt-4 flex items-center space-x-3">
+                        <div className="h-[2px] w-20 bg-white/10 overflow-hidden">
+                          <div className={cn("h-full transition-all duration-500", passwordStrength.color, passwordStrength.strength === 'DÉBIL' ? 'w-1/3' : passwordStrength.strength === 'MEDIA' ? 'w-2/3' : 'w-full')} />
+                        </div>
+                        <span className="text-[8px] font-black tracking-widest uppercase opacity-40">{passwordStrength.strength}</span>
                       </div>
-                      <span className="text-[8px] font-black tracking-widest uppercase opacity-40">{passwordStrength.strength}</span>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   {errors.password && (
                     <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block italic">{errors.password.message}</span>
                   )}
@@ -250,12 +263,21 @@ export default function RegisterPage() {
                   <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
                     Verificación
                   </label>
-                  <input
-                    {...register('confirmPassword')}
-                    type="password"
-                    className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
-                    placeholder="••••••••"
-                  />
+                  <div className="relative">
+                    <input
+                      {...register('confirmPassword')}
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      className="w-full bg-transparent border-b border-white/20 py-4 px-2 pr-10 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/5"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-primary transition-colors"
+                    >
+                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                   {errors.confirmPassword && (
                     <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block italic">{errors.confirmPassword.message}</span>
                   )}

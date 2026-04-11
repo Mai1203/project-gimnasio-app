@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Mail, Lock, LogIn, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, LogIn, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 
 import { useApp } from '@/context/AppContext';
@@ -32,6 +32,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const {
@@ -129,12 +130,21 @@ export default function LoginPage() {
                 <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 block ml-1">
                   Protocolo / Contraseña
                 </label>
-                <input
-                  {...register('password')}
-                  type="password"
-                  className="w-full bg-transparent border-b border-white/20 py-4 px-2 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/10"
-                  placeholder="••••••••"
-                />
+                <div className="relative">
+                  <input
+                    {...register('password')}
+                    type={showPassword ? 'text' : 'password'}
+                    className="w-full bg-transparent border-b border-white/20 py-4 px-2 pr-10 text-white font-light tracking-widest focus:outline-none focus:border-primary transition-all duration-500 placeholder:text-white/10"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-primary transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
                 {errors.password && (
                   <span className="text-[8px] text-primary/70 uppercase tracking-widest font-black mt-2 block">
                     {errors.password.message}
