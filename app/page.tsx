@@ -11,13 +11,40 @@ import {
   Star, 
   Play, 
   ArrowRight,
+  Target,
+  UserCheck,
+  Calendar,
+  Award,
 } from 'lucide-react';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedCard } from '@/components/ui/animated-card';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
-  const containerRef = useRef(null);
+const containerRef = useRef(null);
+
+  const personalTrainingBenefits = [
+    {
+      title: 'Plan a Medida',
+      description: 'Entrenamientos adaptados 100% a tu anatomía, objetivos y nivel de experiencia.',
+      icon: <Target className="h-6 w-6 text-primary" />,
+    },
+    {
+      title: 'Atención Exclusiva',
+      description: 'Corrección técnica en tiempo real para maximizar resultados y evitar lesiones.',
+      icon: <UserCheck className="h-6 w-6 text-primary" />,
+    },
+    {
+      title: 'Flexibilidad Horaria',
+      description: 'Sesiones que se ajustan a tu agenda para que el fitness no sea un obstáculo.',
+      icon: <Calendar className="h-6 w-6 text-primary" />,
+    },
+    {
+      title: 'Motivación Constante',
+      description: 'Un compañero experto que te impulsará a superar tus propios límites cada día.',
+      icon: <Award className="h-6 w-6 text-primary" />,
+    },
+  ];
 
   return (
     <div ref={containerRef} className="flex overflow-x-hidden flex-col min-h-screen bg-white snap-y snap-mandatory scroll-smooth">
@@ -150,6 +177,66 @@ export default function Home() {
 
       {/* ⚡ REST OF CONTENT - SILKY TRANSITION */}
       <div className="relative z-10 bg-white snap-align-none">
+        {/* 🏆 SECCIÓN PERSONAL TRAINING (ORIGINAL) */}
+        <section className="relative py-24 bg-background overflow-hidden border-b border-border">
+          <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/2" />
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.2 }}
+              >
+                <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Servicio Premium</span>
+                <h2 className="text-4xl md:text-7xl font-bold tracking-tight text-black mb-8">
+                  Entrenamiento <span className="text-primary italic">Personal</span>
+                </h2>
+                <p className="text-xl text-muted-foreground leading-relaxed mb-10 max-w-xl">
+                  Alcanza tus metas el doble de rápido con el apoyo de nuestros entrenadores de élite. Diseñamos el camino hacia tu éxito personal.
+                </p>
+                <AnimatedButton size="xl" icon={<ArrowRight size={20} />}>
+                  Reservar Sesión de Evaluación
+                </AnimatedButton>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 1.2 }}
+                className="relative aspect-video rounded-3xl bg-muted overflow-hidden shadow-2xl border border-border"
+              >
+                <div className="absolute inset-0 flex items-center justify-center text-primary/20">
+                  <UserCheck size={120} strokeWidth={1} />
+                </div>
+                {/* Se puede añadir una imagen aquí si se desea */}
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Grid */}
+        <section className="py-24 bg-muted/20">
+          <div className="container mx-auto px-6 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-16 uppercase tracking-tight italic">
+              ¿Por qué elegir un <span className="not-italic text-primary">Personal Trainer?</span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
+              {personalTrainingBenefits.map((benefit, index) => (
+                <AnimatedCard key={index} variant="glass" className="p-8 border border-border/50">
+                  <div className="mb-6 p-4 bg-primary/10 rounded-2xl w-fit">
+                    {benefit.icon}
+                  </div>
+                  <h3 className="text-xl font-bold mb-4">{benefit.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </AnimatedCard>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="py-24 bg-white md:py-32">
         <div className="container px-6 mx-auto">
           <div className="flex flex-col gap-8 justify-between items-end mb-20 md:flex-row">
