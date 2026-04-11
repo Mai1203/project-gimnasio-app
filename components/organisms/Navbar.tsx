@@ -41,7 +41,8 @@ const Navbar: React.FC = () => {
     <>
       <motion.nav
         className={cn(
-          'fixed left-0 right-0 top-0 z-50 transition-all duration-700 ease-in-out',
+          'left-0 right-0 top-0 z-50 transition-all duration-700 ease-in-out',
+          isLightPage ? 'sticky' : 'fixed',
           isScrolled || isLightPage
             ? 'bg-white/80 backdrop-blur-md border-b border-border/40 py-4'
             : 'bg-white/5 backdrop-blur-sm py-8' // Subtle glass effect over heroes
