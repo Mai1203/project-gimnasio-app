@@ -58,7 +58,7 @@ const containerRef = useRef(null);
             transition={{ duration: 1.5 }}
           >
             <video autoPlay muted loop playsInline className="object-cover w-full h-full">
-              <source src="https://www.pexels.com/download/video/33261219/" type="video/mp4" />
+              <source src="https://res.cloudinary.com/dnz8iu8wm/video/upload/f_auto,q_auto/hero1_1920_1080_25fps_v1srdu.mp4" type="video/mp4" />
             </video>
           </motion.div>
           <div className="absolute inset-0 bg-black/40" />
@@ -101,7 +101,7 @@ const containerRef = useRef(null);
             transition={{ duration: 1.5 }}
           >
             <video autoPlay muted loop playsInline className="object-cover w-full h-full">
-              <source src="https://www.pexels.com/download/video/33261225/" type="video/mp4" />
+              <source src="https://res.cloudinary.com/dnz8iu8wm/video/upload/f_auto,q_auto/hero2_1920_1080_25fps_gqkyso.mp4" type="video/mp4" />
             </video>
           </motion.div>
           <div className="absolute inset-0 bg-black/40" />
@@ -143,7 +143,7 @@ const containerRef = useRef(null);
             transition={{ duration: 1.5 }}
           >
             <video autoPlay muted loop playsInline className="object-cover w-full h-full">
-              <source src="https://www.pexels.com/download/video/33514738/" type="video/mp4" />
+              <source src="https://res.cloudinary.com/dnz8iu8wm/video/upload/f_auto,q_auto/hero3_1920_1080_25fps_lfioqc.mp4" type="video/mp4" />
             </video>
           </motion.div>
           <div className="absolute inset-0 bg-black/40" />
